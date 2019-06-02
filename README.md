@@ -4,6 +4,8 @@
 
     composer require artgris/page-bundle
     
+    php bin/console doctrine:schema:update --force 
+  
   
 ## Configuration
 
@@ -14,7 +16,23 @@ in config/packages
      imports:
         - { resource: '@ArtgrisPageBundle/Resources/config/easy_admin.yaml' }
     
-   
+    
+if you have a custom menu add ArtgrisPage entry:
+
+    easy_admin:
+      design:
+          menu:
+              - {entity: ArtgrisPage, label: Pages }
+
+### add a2lix_translation_form.yaml
+
+ex:
+           
+    a2lix_translation_form:
+        locale_provider: default
+        locales: [fr, en]
+        default_locale: fr
+        
 ### add artgris_page.yaml 
 
 not required, no minimal configuration
@@ -44,16 +62,6 @@ not required, no minimal configuration
             'type.tiny_mce' => TinymceType::class,
             'type.meta' => MetaType::class, (title + description)
 
-
-### add a2lix_translation_form.yaml
-
-ex:
-           
-    a2lix_translation_form:
-        locale_provider: default
-        locales: [fr, en]
-        default_locale: fr
-    
 ## Usage
 
     {{ blok('blockTag') }}
