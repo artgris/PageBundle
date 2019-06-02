@@ -1,0 +1,40 @@
+{% block empty_collection '' %}
+
+{% block collection_widget %}
+    {% spaceless %}
+        {% if prototype is defined %}
+            {% set attr = attr|merge({'data-prototype': form_row(prototype)}) %}
+            {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
+        {% endif %}
+        {% set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) %}
+        {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
+        {% set attr = attr|merge({'data-name-prefix': full_name}) %}
+        {{ block('form_widget') }}
+    {% endspaceless %}
+{% endblock collection_widget %}
+
+{% block BlockType_row %}
+    <div class="border p-4 mb-3">
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block BlockType_widget %}
+    <div class="row">
+        <div class="col">
+            {{ block('form_widget', 'bootstrap_4_layout.html.twig') }}
+        </div>
+        <div class="col-2">
+            <div class="text-right btn-group fs-0">
+                <a class="btn btn-light artgrispage_blocks-collection-up page_blocks-collection-action" href="#"><i class="fa fa-arrow-up"></i></a>
+                <a class="btn btn-light artgrispage_blocks-collection-down page_blocks-collection-action" href="#"><i class="fa fa-arrow-down"></i></a>
+                <a class="btn btn-danger artgrispage_blocks-collection-remove page_blocks-collection-action" href="#"><i class="fa fa-trash"></i></a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block collection_row %}
+    {{ block('form_row') }}
+{% endblock collection_row %}

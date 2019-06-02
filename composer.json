@@ -1,0 +1,35 @@
+{
+    "name": "artgris/page-bundle",
+    "type": "symfony-bundle",
+    "description": "add a page manager to EasyAdminBundle for Symfony",
+    "keywords": [
+        "backend",
+        "admin",
+        "generator",
+        "easyadmin"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "artgris",
+            "email": "a.gribet@gmail.com"
+        }
+    ],
+    "require": {
+        "easycorp/easyadmin-bundle": "^2.0",
+        "stof/doctrine-extensions-bundle": "^1.3",
+        "knplabs/doctrine-behaviors": "^1.6",
+        "a2lix/translation-form-bundle": "^3.0"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "php-cs-fixer": "php-cs-fixer"
+    },
+    "autoload": {
+        "psr-4": {
+            "Artgris\\Bundle\\PageBundle\\": "src/"
+        }
+    }
+}

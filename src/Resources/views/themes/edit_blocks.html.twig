@@ -1,0 +1,41 @@
+{% use '@EasyAdmin/form/bootstrap_4.html.twig' %}
+
+{% block _artgrispage_blocks_row %}
+    <div class="row justify-content-center">
+        <div class="col-7">
+            {% set lngs = artgris_lng(form) %}
+            {% if lngs|length > 0 %}
+                <div class="form-group">
+                    <div class="a2lix_translations border p-2">
+                        <ul class="a2lix_translationsLocales nav nav-tabs" role="tablist">
+                            {% for lng in lngs %}
+                                <li class="nav-item">
+                                    <a href="#{{ lng }}_a2lix_translations-fields" class="nav-link {% if app.request.locale == lng %}active{% endif %}" data-toggle="tab" role="tab">
+                                        {{ lng|capitalize }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="a2lix_translationsFields tab-content">
+                            {% for lng in lngs %}
+                                <div id="{{ lng }}_a2lix_translations-fields" class="pt-2 tab-pane {% if app.request.locale == lng %}show active{% endif %}" role="tabpanel">
+                                    {% for child in form.children %}
+                                        {% if child.vars.value.isTranslatable %}
+                                            {% for lngTmp in child.translations %}
+                                                {% if lngTmp.vars.name == lng %}
+                                                    {{- form_errors(lngTmp) -}}
+                                                    {{- form_widget(lngTmp) -}}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {{- form_rest(form) -}}
+        </div>
+    </div>
+{% endblock %}

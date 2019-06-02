@@ -1,0 +1,5 @@
+{% if value %}
+    {{ value|route_name }}
+{% else %}
+    {{ include(entity_config.templates.label_empty) }}
+{% endif %}

@@ -1,0 +1,5 @@
+{% extends "@EasyAdmin/default/new.html.twig" %}
+{% block body_javascript %}
+    {{ parent() }}
+    {% include '@ArtgrisPage/_partial/_collection.html.twig' %}
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+
+    <style>
+        {#  merci arkounay #}
+        @keyframes arkounay-debug-fadeout {
+            0% {
+                opacity: 0;
+                right: 40px;
+            }
+            20% {
+                opacity: 1;
+                right: 20px;
+            }
+            80% {
+                opacity: 1;
+                right: 20px;
+            }
+            100% {
+                opacity: 0;
+                right: 0;
+            }
+        }
+
+        .arkounay-debug-toast {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background-color: rgba(50, 50, 50, 0.8);
+            padding: 10px;
+            color: white;
+            font-size: 12px;
+            animation-name: arkounay-debug-fadeout;
+            animation-duration: 2s;
+            border-radius: 4px;
+            z-index: 10000;
+        }
+    </style>
+
+    <script>
+        function copyToClipboard(copy) {
+            var el = document.createElement('textarea');
+            el.value = copy;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            var toast = document.createElement('div');
+            toast.innerHTML = "Copied <strong>" + copy + "</strong> to clipboard.";
+            toast.className = "arkounay-debug-toast";
+            document.body.appendChild(toast);
+            setTimeout(function () {
+                document.body.removeChild(toast);
+            }, 2000);
+            return false;
+        }
+    </script>
+
+    {% set profiler_markup_version = profiler_markup_version|default(1) %}
+    {% set icon %}
+        {% set icon_fill_color = profiler_markup_version == 1 ? '#222' : '#AAA' %}
+        {% set icon_height = profiler_markup_version == 1 ? '28' : '24' %}
+        <span class="icon">{{ include('@ArtgrisPage/data_collector/icon.svg.twig', { fill_color: icon_fill_color, height: icon_height }) }}</span>
+        <span class="sf-toolbar-value sf-toolbar-status">{{ collector.nbBlocks }}</span>
+    {% endset %}
+
+    {% set text %}
+        {% for key, block in collector.blocks %}
+            <div class="sf-toolbar-info-piece">
+                <a style="font-size: larger" onclick="return copyToClipboard('\{\{ blok(\'{{ key }}\') \}\}');" href="#" title="Copy {{ key }} to clipboard.">{{ key }}</a>
+            </div>
+        {% endfor %}
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': true }) }}
+
+{% endblock %}
+
+{% block menu %}
+    <span class="label ">
+        <span class="icon">{{ include('@ArtgrisPage/data_collector/icon.svg.twig') }}</span>
+        <strong>ArtgrisPage</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>ArtgrisPage</h2>
+    <table>
+        {% for key, block in collector.blocks %}
+            <tr>
+                <th>{{ key }}:</th>
+            </tr>
+            <tr>
+                <td>{{ collector.dump(block)|raw }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

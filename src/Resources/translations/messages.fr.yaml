@@ -1,0 +1,41 @@
+unexpected_type: Vous avez changé un type qui n'est pas compatible avec les données du bloc.
+artgrispage:
+    action:
+        new: Créer un page
+        edit: Configurer une page
+        config: Editer les blocs
+    list:
+        title: Pages
+form:
+    name:
+        label: Nom
+        placeholder: Nom du bloc
+    route:
+        label: Route
+    blocks:
+        label: Blocs
+    slug:
+        placeholder: Tag
+        help: <i class="fa fa-tag"></i> Laisser ce champ vide pour qu'il se génère seul
+    type:
+        placeholder: Veuillez choisir un type
+    translatable:
+        label: Traduisible
+    meta:
+        title:
+            help: max 60 caractères
+            placeholder: Meta Title
+        description:
+            help: max 160 caractères
+            placeholder: Meta Description
+
+type:
+    text: Text
+    textarea: Textarea
+    tiny_mce: TinyMCE
+    meta: Meta SEO
+
+collection:
+    add_bloc: Ajouter un bloc
+
+blocks_empty: Aucun bloc, veuillez ajouter des blocs à la configuration de cette page

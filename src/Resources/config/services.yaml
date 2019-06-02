@@ -1,0 +1,21 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    Artgris\Bundle\PageBundle\:
+        resource: '../../*'
+        exclude: '../../{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    Artgris\Bundle\PageBundle\DataCollector\PageCollector:
+        arguments: ['@Artgris\Bundle\PageBundle\Twig\BlockExtension']
+        tags:
+            -   name:     data_collector
+                template: '@ArtgrisPage/data_collector/artgrispage.html.twig'
+                id:       'artgrispage'
+        public: false
+
+    Artgris\Bundle\PageBundle\Service\TypeService:
+        class: Artgris\Bundle\PageBundle\Service\TypeService
+        arguments: ['%artgrispage.config%']

@@ -1,0 +1,36 @@
+.config-form .form-widget input.form-control, .config-form .form-widget select.form-control, .config-form .form-widget textarea.form-control {
+    max-width: initial;
+}
+
+.config-form .form-group label, .config-form .form-group legend.col-form-label {
+    text-align: left;
+    padding-bottom: 4px;
+}
+
+.config-form .form-group .form-widget {
+    flex: 0 0 100%;
+}
+
+.config-form .a2lix_translations {
+    width: 100%;
+}
+
+.config-form .form-widget-compound .form-group {
+    padding: 0 10px 15px 10px;
+}
+
+.config-form .form-group .form-group {
+    padding: 5px 0 0 10px
+}
+
+.field-checkbox .form-widget {
+    margin-left: 0;
+}
+
+.config-form .form-widget-compound .form-widget-compound {
+    border-left: 5px solid #e3e7ee;
+}
+
+.fs-0 {
+    font-size: 0;
+}
