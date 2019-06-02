@@ -1,21 +1,21 @@
 **work in progress**
 
-##Installation:
+## Installation:
 
     composer require artgris/page-bundle
     
   
-##Configuration
+## Configuration
 
 in config/packages
      
-###add easy_admin.yaml: 
+### add easy_admin.yaml: 
    
      imports:
         - { resource: '@ArtgrisPageBundle/Resources/config/easy_admin.yaml' }
     
    
-###add artgris_page.yaml 
+### add artgris_page.yaml 
 
 not required, no minimal configuration
     
@@ -45,7 +45,7 @@ not required, no minimal configuration
             'type.meta' => MetaType::class, (title + description)
 
 
-###add a2lix_translation_form.yaml
+### add a2lix_translation_form.yaml
 
 ex:
            
@@ -54,13 +54,13 @@ ex:
         locales: [fr, en]
         default_locale: fr
     
-##Usage
+## Usage
 
     {{ blok('blockTag') }}
     
-##Tips
+## Tips
 
-###custom block rendering
+### custom block rendering
 
 create a form type that implements PageFromInterface:
 
