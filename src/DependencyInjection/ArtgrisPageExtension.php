@@ -29,7 +29,7 @@ class ArtgrisPageExtension extends Extension implements PrependExtensionInterfac
     {
         $loader = new YamlFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
         $loader->load('services.yaml');
-        $loader->load('stof_doctrine_extensions.yaml');
+        $loader->load('extensions.yaml');
     }
 
     private function processConfigFiles(array $configs)

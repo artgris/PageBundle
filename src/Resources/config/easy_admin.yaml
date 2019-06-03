@@ -33,3 +33,4 @@ easy_admin:
                 title: artgrispage.action.new
                 fields:
                     - name
+                    - { property: 'slug', label: "form.slug.placeholder",  help: 'form.slug.help', type_options: { required: false } }

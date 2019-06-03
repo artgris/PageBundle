@@ -90,6 +90,7 @@ class PageController extends EasyAdminController
         $formBuilder = parent::createEntityFormBuilder($entity, 'edit')
             ->remove('route')
             ->remove('name')
+            ->remove('slug')
             ->add('blocks', CollectionType::class, [
                 'entry_type' => BlockConfigType::class,
             ]);

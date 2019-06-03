@@ -1,0 +1,13 @@
+stof_doctrine_extensions:
+    orm:
+        default:
+            sortable: true
+            translatable: true
+            sluggable: true
+
+
+doctrine:
+    orm:
+        dql:
+            string_functions:
+                regexp: DoctrineExtensions\Query\Mysql\Regexp

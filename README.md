@@ -64,7 +64,44 @@ not required, no minimal configuration
 
 ## Usage
 
+**Retrieve a simple block by tag**
+
     {{ blok('blockTag') }}
+    
+use the debugging bar to easily find all blocks by route. (click on block tag to copy/paste code)
+    
+**Retrieve all blocks by page tag**    
+   
+    page('pageTag')
+ 
+ ex:
+        
+    {% for blok in page('homepage') %}
+        {{ blok }} <br>
+    {% endfor %}
+
+**Retrieve blocks with a regular expression**
+    
+Retrieve all blocks 
+
+ > in an array
+
+    regex_array_blok('REGEX_EXPRESSION')
+
+ex:
+  
+    {% for blok in regex_array_blok('^sidebar-*') %}
+        {{ blok }} <br>
+    {% endfor %}
+        
+ > implode in a string
+ 
+    regex_blok('REGEX_EXPRESSION')
+
+ex:   
+
+    {{ regex_blok('^sidebar-*') }}  
+    
     
 ## Tips
 

@@ -43,9 +43,19 @@ class PageService
         return $this->blocks;
     }
 
-    public function getBlocksByName(string $bloc)
+    public function getBlocksByName(string $bloc): ?ArtgrisBlock
     {
         return $this->em->getRepository(ArtgrisBlock::class)->findOneBy(['slug' => $bloc]);
+    }
+
+    public function getBlocksByRegex(string $bloc): ?array
+    {
+        return $this->em->getRepository(ArtgrisBlock::class)->findByRegex($bloc);
+    }
+
+    public function getPageBySlug(string $page): ?ArtgrisPage
+    {
+        return $this->em->getRepository(ArtgrisPage::class)->findOneBy(['slug' => $page]);
     }
 
 }

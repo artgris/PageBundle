@@ -31,7 +31,10 @@ class BlockExtension extends AbstractExtension
     {
         return [
             new TwigFunction('blok', [$this, 'getBlock'], ['is_safe' => ['html']]),
+            new TwigFunction('regex_blok', [$this, 'getRegexBlock'], ['is_safe' => ['html']]),
+            new TwigFunction('regex_array_blok', [$this, 'getRegexArrayBlock'], ['is_safe' => ['html']]),
             new TwigFunction('bloks', [$this, 'getBlocks']),
+            new TwigFunction('page', [$this, 'getPage']),
         ];
     }
 
@@ -65,12 +68,32 @@ class BlockExtension extends AbstractExtension
         if ($pageBlock) {
             $value = $this->getBlockValue($pageBlock);
             $this->blocks[$pageBlock->getSlug()] = $value;
+
             return $value ?? '';
         }
 
         return '';
 
     }
+
+
+    public function getRegexArrayBlock(string $bloc): array
+    {
+        $pageBlock = $this->pageService->getBlocksByRegex($bloc);
+        $value = [];
+        foreach ($pageBlock as $block) {
+            $value [] = $this->getBlockValue($block);
+        }
+
+        return $value;
+
+    }
+
+    public function getRegexBlock(string $bloc): string
+    {
+        return implode($this->getRegexArrayBlock($bloc));
+    }
+
 
     private function getBlockValue(ArtgrisBlock $pageBlock)
     {
@@ -81,6 +104,18 @@ class BlockExtension extends AbstractExtension
 
         if (\class_exists($class) && \method_exists($class, $function)) {
             $value = \call_user_func([$class, $function], $value);
+        }
+
+        return $value;
+
+    }
+
+    public function getPage(string $page)
+    {
+        $page = $this->pageService->getPageBySlug($page);
+        $value = [];
+        foreach ($page->getBlocks() as $block) {
+            $value [] = $this->getBlockValue($block);
         }
 
         return $value;

@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method ArtgrisPage[]    findAll()
  * @method ArtgrisPage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PageRepository extends ServiceEntityRepository
+class ArtgrisPageRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -33,4 +33,5 @@ class PageRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 }

@@ -6,9 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Entity(repositoryClass="Artgris\Bundle\PageBundle\Repository\PageRepository")
+ * @ORM\Entity(repositoryClass="Artgris\Bundle\PageBundle\Repository\ArtgrisPageRepository")
  */
 class ArtgrisPage
 {
@@ -37,6 +38,13 @@ class ArtgrisPage
      * @ORM\OneToMany(targetEntity="Artgris\Bundle\PageBundle\Entity\ArtgrisBlock", mappedBy="page", orphanRemoval=true, cascade={"persist"})
      */
     private $blocks;
+
+    /**
+     * @var string
+     * @Gedmo\Slug(fields={"name"}, updatable=false)
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
 
     public function __construct()
     {
@@ -102,6 +110,22 @@ class ArtgrisPage
     public function setRoute(?string $route): void
     {
         $this->route = $route;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(?string $slug): void
+    {
+        $this->slug = $slug;
     }
 
 }
