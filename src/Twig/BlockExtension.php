@@ -65,7 +65,7 @@ class BlockExtension extends AbstractExtension
         if ($pageBlock) {
             $value = $this->getBlockValue($pageBlock);
             $this->blocks[$pageBlock->getSlug()] = $value;
-            return $value;
+            return $value ?? '';
         }
 
         return '';
