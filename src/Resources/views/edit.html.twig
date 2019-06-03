@@ -3,3 +3,7 @@
     {{ parent() }}
     {% include '@ArtgrisPage/_partial/_collection.html.twig' %}
 {% endblock %}
+
+{% block body_class -%}
+    {{ parent() }} artgris-edit-form
+{%- endblock %}
