@@ -1,3 +1,8 @@
+Artgris Page
+============
+
+<img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/configure.png" align="right" />
+
 ## Installation:
 
     composer require artgris/page-bundle
