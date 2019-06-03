@@ -54,7 +54,7 @@ class BlockExtension extends AbstractExtension
         return $this->blocks;
     }
 
-    public function getBlock(string $bloc): string
+    public function getBlock(string $bloc)
     {
         $block = $this->getBlocks();
 
