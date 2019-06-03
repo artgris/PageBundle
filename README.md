@@ -81,7 +81,7 @@ not required, no minimal configuration
     
 use the debugging bar to easily find all blocks by route. (click on block tag to copy/paste code)
 
-<img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/debug.png" />
+<img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/debug_bar.png" />
     
 **Retrieve all blocks by page tag**    
    
