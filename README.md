@@ -8,7 +8,7 @@ Artgris Page
     php bin/console doctrine:schema:update --force 
   
   
-## Configuration
+## Configuration:
 
 in config/packages
      
@@ -63,7 +63,7 @@ not required, no minimal configuration
             'type.tiny_mce' => TinymceType::class,
             'type.meta' => MetaType::class, (title + description)
 
-## Usage
+## Usage:
 
 **1 - Create a page and add blocks**
 
@@ -114,7 +114,7 @@ ex:
     {{ regex_blok('^sidebar-*') }}  
     
     
-## Tips
+## Tips:
 
 ### custom block rendering
 
