@@ -1,8 +1,6 @@
 Artgris Page
 ============
 
-<img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/configure.png" align="right" />
-
 ## Installation:
 
     composer require artgris/page-bundle
@@ -67,11 +65,23 @@ not required, no minimal configuration
 
 ## Usage
 
-**Retrieve a simple block by tag**
+**1 - Create a page and add blocks**
 
-    {{ blok('blockTag') }}
+<img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/configure.png" />
+
+**2 - Edit the content of the blocks**
+
+<img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/edit.png" />
+
+**3 - Retrieve a simple block by tag**
+
+    {{ blok('title') }}
+    
+    => return "My website"
     
 use the debugging bar to easily find all blocks by route. (click on block tag to copy/paste code)
+
+<img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/debug.png" />
     
 **Retrieve all blocks by page tag**    
    
