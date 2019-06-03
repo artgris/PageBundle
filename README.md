@@ -85,8 +85,6 @@ use the debugging bar to easily find all blocks by route. (click on block tag to
 
 **Retrieve blocks with a regular expression**
     
-Retrieve all blocks 
-
  > in an array
 
     regex_array_blok('REGEX_EXPRESSION')
