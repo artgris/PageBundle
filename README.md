@@ -1,5 +1,3 @@
-**work in progress**
-
 ## Installation:
 
     composer require artgris/page-bundle
