@@ -3,9 +3,9 @@
 namespace Artgris\Bundle\PageBundle\Service;
 
 use Artgris\Bundle\PageBundle\Form\Type\ArtgrisTextAreaType;
+use Artgris\Bundle\PageBundle\Form\Type\ArtgrisTextType;
 use Artgris\Bundle\PageBundle\Form\Type\MetaType;
 use Artgris\Bundle\PageBundle\Form\Type\TinymceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TypeService
 {
@@ -25,7 +25,7 @@ class TypeService
     public function getTypes()
     {
         $typesList = $this->config['default_types'] ? [
-            'type.text' => TextType::class,
+            'type.text' => ArtgrisTextType::class,
             'type.textarea' => ArtgrisTextAreaType::class,
             'type.tiny_mce' => TinymceType::class,
             'type.meta' => MetaType::class,

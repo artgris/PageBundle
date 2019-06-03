@@ -58,10 +58,10 @@ not required, no minimal configuration
 
     source: Artgris\Bundle\PageBundle\Service\TypeService
  
-            'type.text' => TextType::class,
-            'type.textarea' => ArtgrisTextAreaType::class,
-            'type.tiny_mce' => TinymceType::class,
-            'type.meta' => MetaType::class, (title + description)
+            'text' => ArtgrisTextType::class,  => not required TextType
+            'textarea' => ArtgrisTextAreaType::class,  => not required TextAreaType with rows = 8 + renderType: \nl2br
+            'tiny_mce' => TinymceType::class, => not required TextAreaType with a .tinymce class
+            'meta' => MetaType::class, (title + description) => not required TextType (max 60) + not required TextAreaType (max 160)
 
 ## Usage:
 

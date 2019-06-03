@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 
 class MetaType extends AbstractType
@@ -19,6 +20,7 @@ class MetaType extends AbstractType
                     'placeholder' => 'form.meta.title.placeholder',
                 ],
                 'help' => 'form.meta.title.help',
+                'required' => false,
                 'constraints' => [
                     new Length(['max' => 60]),
                 ],
@@ -29,9 +31,19 @@ class MetaType extends AbstractType
                     'rows' => '5',
                 ],
                 'help' => 'form.meta.description.help',
+                'required' => false,
                 'constraints' => [
                     new Length(['max' => 160]),
                 ],
             ]);
     }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'required' => false,
+        ]);
+    }
+
+
 }
