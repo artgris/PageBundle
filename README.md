@@ -163,19 +163,20 @@ create a form type that implements PageFromInterface:
 
 Edit the rendering as you wish using the getRenderType method.
 
-### Tutorials
+## Tutorials
 
   * [How to create a TinyMCE Type](doc/tutorials/tinymce.md)
 
 
-### Cache Infos
+## Cache Infos
 
 by default, all blocks of the current page or not linked to a page are loaded (and present in the debug bar),
 all other calls require a call to the database:
 
 ex:  
 
-**load by default (1 call)**
+**load by default**
+- bloks()
 - blok('block_linked_to_the_current_page') =>  via route selector in page configuration
 - blok('block_linked_to_any_page')  => route selector left empty
 
