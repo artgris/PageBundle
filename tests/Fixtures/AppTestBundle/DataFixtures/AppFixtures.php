@@ -1,5 +1,6 @@
 <?php
 
+namespace  Artgris\Bundle\PageBundle\Tests\Fixtures\AppTestBundle\DataFixtures;
 
 use Artgris\Bundle\PageBundle\Entity\ArtgrisPage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -18,6 +19,7 @@ class AppFixtures extends Fixture
         foreach ($pages as $page) {
             $manager->persist($page);
         }
+        $manager->flush();
     }
 
     private function createPages(): array
@@ -25,7 +27,7 @@ class AppFixtures extends Fixture
         $pages = [];
         foreach (\range(1, 20) as $i) {
             $page = new ArtgrisPage();
-            $page->setName('page'.$i);
+            $page->setName('page' . $i);
             $pages[] = $page;
         }
 

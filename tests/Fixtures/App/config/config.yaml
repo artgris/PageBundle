@@ -37,6 +37,7 @@ security:
             memory: ~
 
 imports:
+    - { resource: services.yaml }
     - { resource: '@ArtgrisPageBundle/Resources/config/easy_admin.yaml' }
 
 

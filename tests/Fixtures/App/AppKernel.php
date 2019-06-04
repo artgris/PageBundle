@@ -18,15 +18,16 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle(),
-            new Artgris\Bundle\PageBundle\ArtgrisPageBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle(),
+            new Artgris\Bundle\PageBundle\ArtgrisPageBundle(),
+            new Artgris\Bundle\PageBundle\Tests\Fixtures\AppTestBundle\AppTestBundle(),
         ];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yaml');
+        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yaml');
         $loader->load(function (ContainerBuilder $container) {
             $container->loadFromExtension('framework', [
                 'assets' => null,
@@ -39,7 +40,7 @@ class AppKernel extends Kernel
      */
     public function getCacheDir()
     {
-        return __DIR__.'/../../../build/cache/'.$this->getEnvironment();
+        return __DIR__ . '/../../../build/cache/' . $this->getEnvironment();
     }
 
     /**
@@ -47,6 +48,6 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-        return __DIR__.'/../../../build/kernel_logs/'.$this->getEnvironment();
+        return __DIR__ . '/../../../build/kernel_logs/' . $this->getEnvironment();
     }
 }
