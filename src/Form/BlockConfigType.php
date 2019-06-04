@@ -26,8 +26,7 @@ class BlockConfigType extends AbstractType
                 $child = $event->getData();
 
                 if ($child instanceof ArtgrisBlock) {
-
-                    $helpTag = '<i class="fa fa-tag"></i> ' . $child->getSlug();
+                    $helpTag = '<i class="fa fa-tag"></i> '.$child->getSlug();
 
                     $typeExists = \class_exists($child->getType());
                     $content = [
@@ -35,19 +34,18 @@ class BlockConfigType extends AbstractType
                         'help' => $typeExists ? $helpTag : "{$helpTag} (Type {$child->getType()} not found.)",
                     ];
 
-                    if (in_array($child->getType(), [
+                    if (\in_array($child->getType(), [
                         DateType::class,
                         DateIntervalType::class,
                         DateTimeType::class,
                         TimeType::class,
-                        BirthdayType::class
+                        BirthdayType::class,
                     ], true)) {
                         $content['input'] = 'string';
                     }
 
                     if ($child->isTranslatable()) {
-
-                        $content ['field_type'] = $typeExists ? $child->getType() : null;
+                        $content['field_type'] = $typeExists ? $child->getType() : null;
                         $form->add(
                             'translations',
                             TranslationsType::class,

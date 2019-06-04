@@ -33,5 +33,4 @@ class ArtgrisPageRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

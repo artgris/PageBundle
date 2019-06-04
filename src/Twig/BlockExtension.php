@@ -73,27 +73,23 @@ class BlockExtension extends AbstractExtension
         }
 
         return '';
-
     }
-
 
     public function getRegexArrayBlock(string $bloc): array
     {
         $pageBlock = $this->pageService->getBlocksByRegex($bloc);
         $value = [];
         foreach ($pageBlock as $block) {
-            $value [] = $this->getBlockValue($block);
+            $value[] = $this->getBlockValue($block);
         }
 
         return $value;
-
     }
 
     public function getRegexBlock(string $bloc): string
     {
-        return implode($this->getRegexArrayBlock($bloc));
+        return \implode($this->getRegexArrayBlock($bloc));
     }
-
 
     private function getBlockValue(ArtgrisBlock $pageBlock)
     {
@@ -107,7 +103,6 @@ class BlockExtension extends AbstractExtension
         }
 
         return $value;
-
     }
 
     public function getPage(string $page)
@@ -115,11 +110,9 @@ class BlockExtension extends AbstractExtension
         $page = $this->pageService->getPageBySlug($page);
         $value = [];
         foreach ($page->getBlocks() as $block) {
-            $value [] = $this->getBlockValue($block);
+            $value[] = $this->getBlockValue($block);
         }
 
         return $value;
-
     }
-
 }

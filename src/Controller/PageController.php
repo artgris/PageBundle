@@ -159,7 +159,6 @@ class PageController extends EasyAdminController
                         : $this->request->query->get('id'),
                 ]);
             }
-
         }
 
         return parent::redirectToReferrer();

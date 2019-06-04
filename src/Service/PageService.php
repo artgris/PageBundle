@@ -31,7 +31,6 @@ class PageService
     public function getBlocks()
     {
         if (null === $this->blocks && $request = $this->requestStack->getCurrentRequest()) {
-
             $pageBlock = $this->em->getRepository(ArtgrisPage::class)->findByRoute($request->get('_controller'));
             foreach ($pageBlock as $page) {
                 foreach ($page->getBlocks() as $pageBlock) {
@@ -57,5 +56,4 @@ class PageService
     {
         return $this->em->getRepository(ArtgrisPage::class)->findOneBy(['slug' => $page]);
     }
-
 }
