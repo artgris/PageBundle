@@ -163,6 +163,11 @@ create a form type that implements PageFromInterface:
 
 Edit the rendering as you wish using the getRenderType method.
 
+### Tutorials
+
+  * [How to create a TinyMCE Type](doc/tutorials/tinymce.md)
+
+
 ### Cache Infos
 
 by default, all blocks of the current page or not linked to a page are loaded (and present in the debug bar),
