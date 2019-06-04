@@ -1,8 +1,10 @@
 <?php
+
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput as ConsoleOutput;
+
 /*
  * Code inspired by https://github.com/Orbitale/CmsBundle/blob/master/Tests/bootstrap.php
  * (c) Alexandre Rock Ancelet <alex@orbitale.io>
@@ -14,6 +16,7 @@ if (!\file_exists($file)) {
 $autoload = require $file;
 AnnotationRegistry::registerLoader(function ($class) use ($autoload) {
     $autoload->loadClass($class);
+
     return \class_exists($class, false);
 });
 
