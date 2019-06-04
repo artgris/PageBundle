@@ -93,7 +93,7 @@ ex:
         
 **Retrieve all blocks by page tag**    
    
-    page('pageTag')
+    page('page-tag')
  
  ex:
         
@@ -105,7 +105,7 @@ ex:
     
  > in an array
 
-    regex_array_blok('RegexExpression')
+    regex_array_blok('regex-expression')
 
 ex:
   
@@ -115,7 +115,7 @@ ex:
         
  > implode in a string
  
-    regex_blok('RegexExpression')
+    regex_blok('regex-expression')
 
 ex:   
 
@@ -175,16 +175,16 @@ all other calls require a call to the database:
 
 **load by default**
 - bloks()
-- blok('block_linked_to_the_current_page') =>  via route selector in page configuration
-- blok('block_linked_to_any_page')  => route selector left empty
+- blok('block-linked-to-the-current-page') =>  via route selector in page configuration
+- blok('block-linked-to-any-page')  => route selector left empty
 
 **add in cache after first call**
-- blok('block_of_another_page') 
+- blok('block-of-another-page') 
 
 **not in cache, required new db call after each call**
-- page('pageTag')
-- regex_array_blok('RegexExpression')
-- regex_blok('RegexExpression')
+- page('page-tag')
+- regex_array_blok('regex-expression')
+- regex_blok('regex-expression')
 
 
 
