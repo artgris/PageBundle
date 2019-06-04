@@ -105,7 +105,7 @@ ex:
     
  > in an array
 
-    regex_array_blok('REGEX_EXPRESSION')
+    regex_array_blok('RegexExpression')
 
 ex:
   
@@ -115,7 +115,7 @@ ex:
         
  > implode in a string
  
-    regex_blok('REGEX_EXPRESSION')
+    regex_blok('RegexExpression')
 
 ex:   
 
@@ -183,8 +183,8 @@ all other calls require a call to the database:
 
 **not in cache, required new db call after each call**
 - page('pageTag')
-- regex_array_blok('REGEX_EXPRESSION')
-- regex_blok('REGEX_EXPRESSION')
+- regex_array_blok('RegexExpression')
+- regex_blok('RegexExpression')
 
 
 
