@@ -173,8 +173,6 @@ Edit the rendering as you wish using the getRenderType method.
 by default, all blocks of the current page or not linked to a page are loaded (and present in the debug bar),
 all other calls require a call to the database:
 
-ex:  
-
 **load by default**
 - bloks()
 - blok('block_linked_to_the_current_page') =>  via route selector in page configuration
