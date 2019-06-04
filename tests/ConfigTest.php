@@ -35,6 +35,15 @@ class ConfigTest extends AbstractTestCase
         );
     }
 
+    public function testEditConfigManager()
+    {
+        $this->requestEditConfigurationView();
+        $this->assertSame(
+            200,
+            static::$client->getResponse()->getStatusCode()
+        );
+    }
+
 
 
 
