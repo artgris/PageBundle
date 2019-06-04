@@ -16,7 +16,7 @@ matrix:
     include:
     # Minimum supported dependencies with the latest and oldest PHP version
     - php: 7.2
-      env: COMPOSER_FLAGS="--prefer-stable" SYMFONY_DEPRECATIONS_HELPER="weak_vendors"
+      env: COMPOSER_FLAGS="--prefer-stable"
 
         # Test the latest stable release
     - php: 7.1
