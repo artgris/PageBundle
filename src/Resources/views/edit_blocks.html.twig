@@ -15,32 +15,3 @@
 {% block body_class -%}
     {{ parent() }} config-form
 {%- endblock %}
-
-{% block body_javascript %}
-    {{ parent() }}
-
-    {% block edit_blocks_javascript %}
-        <script src="{{ asset('bundles/artgrispage/js/tinymce5/tinymce.min.js') }}"></script>
-        <script src="{{ asset('bundles/artgrispage/js/tinymce5/plugins/media/plugin.min.js') }}"></script>
-        <script src="{{ asset('bundles/artgrispage/js/tinymce5/plugins/image/plugin.min.js') }}"></script>
-
-        <script>
-
-            tinymce.init({
-                selector: '.tinymce',
-                height: 200,
-                menubar: false,
-                language: 'fr_FR',
-                paste_as_text: true,
-                branding: false,
-                remove_script_host: false,
-                entity_encoding: "raw",
-                plugins: [
-                    'paste code lists'
-                ],
-                toolbar: 'bold italic bullist | removeformat | code',
-            });
-        </script>
-    {% endblock %}
-
-{% endblock %}
