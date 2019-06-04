@@ -81,6 +81,16 @@ use the debugging bar to easily find all blocks by route. (click on block tag to
 
 <img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/debug_bar.png" />
     
+**Retrieve all blocks of the current page or not linked to a page**    
+
+    bloks()
+        
+ex:
+
+    {% for blok in bloks() %}
+        {{ blok }} <br>
+    {% endfor %}
+        
 **Retrieve all blocks by page tag**    
    
     page('pageTag')
