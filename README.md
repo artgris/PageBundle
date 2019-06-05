@@ -77,6 +77,8 @@ not required, no minimal configuration
     
     => return "My website"
     
+<img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/blok.jpg" align="right" />
+    
 use the debugging bar to easily find all blocks by route. (click on block tag to copy/paste code)
 
 <img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/debug_bar.png" />
