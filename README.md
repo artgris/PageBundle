@@ -73,11 +73,12 @@ not required, no minimal configuration
 
 **3 - Retrieve a simple block by tag**
 
+<img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/blok.jpg" align="right" />
+  
     {{ blok('title') }}
     
     => return "My website"
     
-<img src="https://raw.githubusercontent.com/artgris/PageBundle/master/doc/images/blok.jpg" align="right" />
     
 use the debugging bar to easily find all blocks by route. (click on block tag to copy/paste code)
 
