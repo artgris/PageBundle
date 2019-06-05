@@ -173,18 +173,16 @@ Edit the rendering as you wish using the getRenderType method.
 
 ## Cache Infos
 
-by default, all blocks of the current page or not linked to a page are loaded (and present in the debug bar),
-all other calls require a call to the database:
+All blocks of the current page or not linked to a page are cached (and present in the debug bar) after calling one of these twig functions:
 
-**load by default**
 - bloks()
 - blok('block-linked-to-the-current-page') =>  via route selector in page configuration
 - blok('block-linked-to-any-page')  => route selector left empty
 
-**add in cache after first call**
+**content added to the cache after the first call:**
 - blok('block-of-another-page') 
 
-**not in cache, required new db call after each call**
+**not in cache, required new db call after each call:**
 - page('page-tag')
 - regex_array_blok('regex-expression')
 - regex_blok('regex-expression')
