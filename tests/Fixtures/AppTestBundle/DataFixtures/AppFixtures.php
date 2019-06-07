@@ -23,9 +23,8 @@ class AppFixtures extends Fixture
         $this->typeService = $typeService;
     }
 
-
     /**
-     * Load data fixtures with the passed EntityManager
+     * Load data fixtures with the passed EntityManager.
      *
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
@@ -66,7 +65,7 @@ class AppFixtures extends Fixture
                 $block->setName($this->getRandomName('blok'));
                 $block->setPage($pages[\array_rand($pages)]);
                 $block->setContent('"Hello"');
-                $block->setPosition($j -1);
+                $block->setPosition($j - 1);
                 $block->setType($types[\array_rand($types)]);
                 $blocks[] = $block;
             }
@@ -75,7 +74,7 @@ class AppFixtures extends Fixture
         return $blocks;
     }
 
-    public function getRandomName($name = "Page")
+    public function getRandomName($name = 'Page')
     {
         $words = [
             'Lorem', 'Ipsum', 'Sit', 'Amet', 'Adipiscing', 'Elit',
@@ -85,6 +84,7 @@ class AppFixtures extends Fixture
         ];
         $numWords = 2;
         \shuffle($words);
+
         return $name.' '.\implode(' ', \array_slice($words, 0, $numWords));
     }
 }

@@ -16,5 +16,4 @@ class RestrictionTest extends AbstractTestCase
             static::$client->getResponse()->getStatusCode()
         );
     }
-
 }

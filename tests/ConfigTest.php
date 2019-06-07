@@ -43,9 +43,4 @@ class ConfigTest extends AbstractTestCase
             static::$client->getResponse()->getStatusCode()
         );
     }
-
-
-
-
-
 }
