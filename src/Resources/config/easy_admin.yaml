@@ -27,6 +27,7 @@ easy_admin:
                     - { property: 'name' , label: form.name.label }
                     - { property: 'route', label: form.route.label, template: '@ArtgrisPage/fields/field_route.html.twig' }
                     - { property: 'blocks' , label: form.blocks.label }
+                sort: ['name', 'ASC']
             edit:
                 title: 'artgrispage.action.edit'
             form:
