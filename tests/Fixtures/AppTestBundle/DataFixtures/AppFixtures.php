@@ -66,6 +66,7 @@ class AppFixtures extends Fixture
                 $block->setName($this->getRandomName('blok'));
                 $block->setPage($pages[\array_rand($pages)]);
                 $block->setContent('"Hello"');
+                $block->setPosition($j -1);
                 $block->setType($types[\array_rand($types)]);
                 $blocks[] = $block;
             }
