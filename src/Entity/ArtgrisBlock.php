@@ -25,7 +25,6 @@ class ArtgrisBlock
 
     /**
      * @var int
-     * @Gedmo\SortablePosition()
      * @ORM\Column(type="integer")
      */
     private $position;
@@ -51,7 +50,6 @@ class ArtgrisBlock
     /**
      * @ORM\ManyToOne(targetEntity="ArtgrisPage", inversedBy="blocks")
      * @ORM\JoinColumn(nullable=false)
-     * @Gedmo\SortableGroup
      */
     private $page;
 
@@ -100,7 +98,7 @@ class ArtgrisBlock
     /**
      * @return int
      */
-    public function getPosition(): int
+    public function getPosition(): ?int
     {
         return $this->position;
     }

@@ -6,6 +6,7 @@ use Artgris\Bundle\PageBundle\Entity\ArtgrisBlock;
 use Artgris\Bundle\PageBundle\Service\TypeService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -48,6 +49,11 @@ class BlockType extends AbstractType
             ])
             ->add('translatable', null, [
                 'label' => 'form.translatable.label',
+            ])
+            ->add('position', HiddenType::class, [
+                'attr' => [
+                    'class' => 'position',
+                ],
             ]);
     }
 

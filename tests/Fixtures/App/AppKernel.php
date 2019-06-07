@@ -3,6 +3,7 @@
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
+
 /**
  * The kernel used in the application of most functional tests.
  */
@@ -22,9 +23,9 @@ class AppKernel extends Kernel
             new Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle(),
         ];
     }
+
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yaml');
         $loader->load(function (ContainerBuilder $container) {
             $container->loadFromExtension('framework', [
@@ -32,6 +33,7 @@ class AppKernel extends Kernel
             ]);
         });
     }
+
     /**
      * @return string
      */
@@ -39,6 +41,7 @@ class AppKernel extends Kernel
     {
         return __DIR__.'/../../../build/cache/'.$this->getEnvironment();
     }
+
     /**
      * @return string
      */

@@ -36,6 +36,7 @@ class ArtgrisPage
     /**
      * @Assert\Valid()
      * @ORM\OneToMany(targetEntity="Artgris\Bundle\PageBundle\Entity\ArtgrisBlock", mappedBy="page", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $blocks;
 

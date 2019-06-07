@@ -36,5 +36,4 @@ abstract class AbstractTestCase extends WebTestCase
         }
         \copy($originalDbPath, $targetDbPath);
     }
-
 }

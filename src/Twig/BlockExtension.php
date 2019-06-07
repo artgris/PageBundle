@@ -88,7 +88,7 @@ class BlockExtension extends AbstractExtension
 
     public function getRegexBlock(string $bloc): string
     {
-        return \implode($this->getRegexArrayBlock($bloc));
+        return \implode('', $this->getRegexArrayBlock($bloc));
     }
 
     private function getBlockValue(ArtgrisBlock $pageBlock)

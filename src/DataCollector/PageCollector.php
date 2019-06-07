@@ -60,7 +60,7 @@ class PageCollector extends DataCollector
             $cloner = new VarCloner();
             $dumper = new HtmlDumper();
 
-            $dumper->dump($cloner->cloneVar($variable), $output = \fopen('php://memory', 'r+b'));
+            $dumper->dump($cloner->cloneVar($variable), $output = \fopen('php://memory', 'rb+'));
             if (false !== $dumpedData = \stream_get_contents($output, -1, 0)) {
                 return $dumpedData;
             }

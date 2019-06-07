@@ -2,7 +2,6 @@
 
 namespace Artgris\Bundle\PageBundle\Tests;
 
-
 use Artgris\Bundle\PageBundle\Tests\Fixtures\AbstractTestCase;
 
 class ConfigTest extends AbstractTestCase
@@ -17,5 +16,4 @@ class ConfigTest extends AbstractTestCase
             static::$client->getResponse()->getStatusCode()
         );
     }
-
 }
