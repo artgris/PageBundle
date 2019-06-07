@@ -21,9 +21,44 @@ abstract class AbstractTestCase extends WebTestCase
         static::$client = static::createClient($options);
     }
 
-    protected function getBackendPage()
+    protected function getBackendPage(array $queryParameters)
     {
-        return static::$client->request('GET', '/admin/?entity=ArtgrisPage');
+        return static::$client->request('GET', '/admin/?'.\http_build_query($queryParameters, '', '&'));
+    }
+
+    protected function getArtgrisPageListView()
+    {
+        return $this->getBackendPage([
+            'entity' => 'ArtgrisPage',
+            'view' => 'list',
+        ]);
+    }
+
+    protected function requestShowView($entityId = 10)
+    {
+        return $this->getBackendPage([
+            'action' => 'show',
+            'entity' => 'ArtgrisPage',
+            'id' => $entityId,
+        ]);
+    }
+
+    protected function requestEditView($entityId = 10)
+    {
+        return $this->getBackendPage([
+            'action' => 'edit',
+            'entity' => 'ArtgrisPage',
+            'id' => $entityId,
+        ]);
+    }
+
+    protected function requestEditConfigurationView($entityId = 10)
+    {
+        return $this->getBackendPage([
+            'action' => 'editBlocks',
+            'entity' => 'ArtgrisPage',
+            'id' => $entityId,
+        ]);
     }
 
     protected function initDatabase()

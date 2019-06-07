@@ -3,6 +3,5 @@ services:
         autowire: true
         autoconfigure: true
 
-
-Artgris\Bundle\PageBundle\Tests\Fixtures\DataFixtures\AppFixtures:
-    tags: ['doctrine.fixture.orm']
+    Artgris\Bundle\PageBundle\Tests\Fixtures\AppTestBundle\DataFixtures\AppFixtures:
+        tags: ['doctrine.fixture.orm']
