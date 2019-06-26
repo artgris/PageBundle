@@ -16,6 +16,23 @@ in config/packages
    
      imports:
         - { resource: '@ArtgrisPageBundle/Resources/config/easy_admin.yaml' }
+
+### configure KnpLabs/DoctrineBehaviors: https://github.com/KnpLabs/DoctrineBehaviors
+    
+- add locale Parameters in services.yaml:
+    
+        parameters:
+            locale: 'en'
+       
+
+- Add to AppKernel: 
+    
+        <?php
+
+        return [
+            ...
+            Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle::class => ['all' => true],
+        ];
     
     
 if you have a custom menu add ArtgrisPage entry:
