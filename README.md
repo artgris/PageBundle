@@ -19,7 +19,7 @@ in config/packages
 
 ### configure KnpLabs/DoctrineBehaviors: https://github.com/KnpLabs/DoctrineBehaviors
     
-- add locale Parameters in services.yaml:
+- Add locale parameter in services.yaml:
     
         parameters:
             locale: 'en'
