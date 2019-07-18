@@ -5,7 +5,9 @@
          '@ArtgrisPage/themes/edit_blocks.html.twig',
          '@ArtgrisPage/themes/form.html.twig',
      ] %}
-     {{ parent() }}
+     {{ form_start(form, {'attr': {'class' : 'edit-form'}}) }}
+     {{ form_widget(form) }}
+     {{ form_end(form) }}
  {% endblock %}
 
 {% block content_title %}
@@ -15,3 +17,4 @@
 {% block body_class -%}
     {{ parent() }} config-form
 {%- endblock %}
+
