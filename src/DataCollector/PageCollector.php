@@ -23,6 +23,7 @@ class PageCollector extends DataCollector
      */
     private $em;
 
+    private $blockNb = 0;
     /**
      * PageCollector constructor.
      */
@@ -45,6 +46,8 @@ class PageCollector extends DataCollector
         }
 
         krsort($this->data['blocks']);
+
+        $this->data['blocks_list'] = $this->blockExtension->getBlocks();
         
     }
 
@@ -60,12 +63,17 @@ class PageCollector extends DataCollector
 
     public function reset()
     {
-        $this->data = ['blocks' => null];
+        $this->data = ['blocks' => null, 'blocks_list' => null];
     }
 
     public function getBlocks()
     {
         return $this->data['blocks'];
+    }
+
+    public function getBlocksList()
+    {
+        return $this->data['blocks_list'];
     }
 
     // source: easyadmin
@@ -90,6 +98,6 @@ class PageCollector extends DataCollector
 
     public function getNbBlocks()
     {
-        return $this->getBlocks() ? \count($this->getBlocks()) : 0;
+        return $this->getBlocksList() ? \count($this->getBlocksList()) : 0;
     }
 }
