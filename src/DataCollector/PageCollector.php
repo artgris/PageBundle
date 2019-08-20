@@ -2,7 +2,9 @@
 
 namespace Artgris\Bundle\PageBundle\DataCollector;
 
+use Artgris\Bundle\PageBundle\Entity\ArtgrisPage;
 use Artgris\Bundle\PageBundle\Twig\BlockExtension;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -16,13 +18,18 @@ class PageCollector extends DataCollector
      * @var BlockExtension
      */
     private $blockExtension;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
 
     /**
      * PageCollector constructor.
      */
-    public function __construct(BlockExtension $blockExtension)
+    public function __construct(BlockExtension $blockExtension, EntityManagerInterface $em)
     {
         $this->blockExtension = $blockExtension;
+        $this->em = $em;
     }
 
     /**
@@ -30,7 +37,15 @@ class PageCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $this->data['blocks'] = $this->blockExtension->getBlocks();
+        $blocks = $this->em->getRepository(ArtgrisPage::class)->findByRoute($request->get('_controller'));
+
+        $this->data['blocks'] = [];
+        foreach ($blocks as $block) {
+            $this->data['blocks'][$block->getRoute()][] = $block;
+        }
+
+        krsort($this->data['blocks']);
+        
     }
 
     /**
@@ -67,7 +82,7 @@ class PageCollector extends DataCollector
         }
 
         if (\class_exists(Yaml::class)) {
-            return \sprintf('<pre class="sf-dump">%s</pre>', Yaml::dump((array) $variable, 1024));
+            return \sprintf('<pre class="sf-dump">%s</pre>', Yaml::dump((array)$variable, 1024));
         }
 
         return \sprintf('<pre class="sf-dump">%s</pre>', \var_export($variable, true));

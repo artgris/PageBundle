@@ -66,10 +66,28 @@
     {% endset %}
 
     {% set text %}
-        {% for key, block in collector.blocks %}
-            <div class="sf-toolbar-info-piece">
-                <a style="font-size: larger" onclick="return copyToClipboard('\{\{ blok(\'{{ key }}\') \}\}');" href="#" title="Copy {{ key }} to clipboard.">{{ key }}</a>
-            </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Bloks</b> <b style="text-align: center;">Page</b> <b style="text-align: center;">Routes</b>
+        </div>
+        {% for route, pages in collector.blocks %}
+            {% for page in pages %}
+                {% set looping = loop.first %}
+                {% for block in page.blocks %}
+                    <div  class="sf-toolbar-info-piece ">
+                       <span class="sf-toolbar-status ">
+                           <a onclick="return copyToClipboard('\{\{ blok(\'{{ block.name }}\') \}\}');" href="#" title="Copy {{ block.name }} to clipboard.">{{ block.name }}</a>
+                       </span>
+                        <b style="text-align: center;">{{ loop.first  ? page.name : '|' }}</b>
+                        <b style="text-align: center;">
+                            {% if looping %}
+                                {{ route is empty ? '-- No route --' : route }}
+                            {% else %}
+                                |
+                            {% endif %}
+                        </b>
+                    </div>
+                {% endfor %}
+            {% endfor %}
         {% endfor %}
     {% endset %}
 
