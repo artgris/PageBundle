@@ -37,17 +37,18 @@ class PageCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $blocks = $this->em->getRepository(ArtgrisPage::class)->findByRoute($request->get('_controller'));
-
+        $this->data['blocks_list'] = $this->blockExtension->getBlocks();
+        $blocks = $this->blockExtension->getBlocksCollection();
         $this->data['blocks'] = [];
-        foreach ($blocks as $block) {
-            $this->data['blocks'][$block->getRoute()][] = $block;
+        if ($blocks) {
+            foreach ($blocks as $block) {
+                $this->data['blocks'][$block->getPage()->getRoute()][] = $block;
+            }
         }
 
         krsort($this->data['blocks']);
 
-        $this->data['blocks_list'] = $this->blockExtension->getBlocks();
-        
+
     }
 
     /**

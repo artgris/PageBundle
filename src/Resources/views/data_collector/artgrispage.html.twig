@@ -69,25 +69,23 @@
         <div class="sf-toolbar-info-piece">
             <b><u>Blok</u></b> <b style="text-align: center;"><u>Page</u></b> <b style="text-align: center;"><u>Route</u></b>
         </div>
-        {% for route, pages in collector.blocks %}
-            {% for page in pages %}
-                {% for block in page.blocks %}
-                    <div class="sf-toolbar-info-piece ">
+        {% for page, blocks in collector.blocks %}
+            {% for block in blocks %}
+                <div class="sf-toolbar-info-piece ">
                        <span class="sf-toolbar-status ">
                            <a onclick="return copyToClipboard('\{\{ blok(\'{{ block.slug }}\') \}\}');" href="#" title="Copy {{ block.slug }} to clipboard.">{{ block.slug }}</a>
-                       </span> <b style="text-align: center;">{{ loop.first  ? page.name : '|' }}</b> <b style="text-align: center;">
-                            {% if  loop.first  %}
-                                {% if route is empty %}
-                                    <span class="sf-toolbar-status">no route</span>
-                                {% else %}
-                                    {{ route }}
-                                {% endif %}
+                       </span> <b style="text-align: center;">{{ loop.first  ? block.page.name : '|' }}</b> <b style="text-align: center;">
+                        {% if  loop.first %}
+                            {% if block.page.route is empty %}
+                                <span class="sf-toolbar-status">no route</span>
                             {% else %}
-                                |
+                                {{ block.page.route }}
                             {% endif %}
-                        </b>
-                    </div>
-                {% endfor %}
+                        {% else %}
+                            |
+                        {% endif %}
+                    </b>
+                </div>
             {% endfor %}
         {% endfor %}
     {% endset %}

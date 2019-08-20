@@ -20,6 +20,11 @@ class BlockExtension extends AbstractExtension
     private $blocks;
 
     /**
+     * @var array|ArtgrisBlock[]
+     */
+    private $blocksCollection;
+
+    /**
      * BlockExtension constructor.
      */
     public function __construct(PageService $pageService)
@@ -47,17 +52,24 @@ class BlockExtension extends AbstractExtension
                     /** @var ArtgrisBlock $pageBlock */
                     $value = $this->getBlockValue($pageBlock);
                     $this->blocks[$pageBlock->getSlug()] = $value;
+                    $this->blocksCollection[] = $pageBlock;
                 }
             }
         }
 
         return $this->blocks;
     }
+    public function getBlocksCollection()
+    {
+        return $this->blocksCollection;
+
+    }
 
     public function getBlock(string $bloc)
     {
         $block = $this->getBlocks();
 
+        // get from cache
         if (isset($block[$bloc])) {
             return $block[$bloc];
         }
@@ -68,7 +80,7 @@ class BlockExtension extends AbstractExtension
         if ($pageBlock) {
             $value = $this->getBlockValue($pageBlock);
             $this->blocks[$pageBlock->getSlug()] = $value;
-
+            $this->blocksCollection[]= $pageBlock;
             return $value ?? '';
         }
 
