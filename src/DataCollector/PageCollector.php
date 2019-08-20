@@ -23,7 +23,6 @@ class PageCollector extends DataCollector
      */
     private $em;
 
-    private $blockNb = 0;
     /**
      * PageCollector constructor.
      */
