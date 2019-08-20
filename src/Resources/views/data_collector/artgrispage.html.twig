@@ -71,13 +71,12 @@
         </div>
         {% for route, pages in collector.blocks %}
             {% for page in pages %}
-                {% set looping = loop.first %}
                 {% for block in page.blocks %}
                     <div class="sf-toolbar-info-piece ">
                        <span class="sf-toolbar-status ">
                            <a onclick="return copyToClipboard('\{\{ blok(\'{{ block.name }}\') \}\}');" href="#" title="Copy {{ block.name }} to clipboard.">{{ block.name }}</a>
                        </span> <b style="text-align: center;">{{ loop.first  ? page.name : '|' }}</b> <b style="text-align: center;">
-                            {% if looping %}
+                            {% if  loop.first  %}
                                 {% if route is empty %}
                                     <span class="sf-toolbar-status">no route</span>
                                 {% else %}
