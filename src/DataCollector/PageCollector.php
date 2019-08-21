@@ -42,7 +42,8 @@ class PageCollector extends DataCollector
         $this->data['blocks'] = [];
         if ($blocks) {
             foreach ($blocks as $block) {
-                $this->data['blocks'][$block->getPage()->getRoute()][] = $block;
+
+                $this->data['blocks'][$block->getPage()->getRoute()][$block->getPage()->getName()][] = $block;
             }
         }
 
