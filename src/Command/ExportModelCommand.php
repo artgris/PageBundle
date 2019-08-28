@@ -7,13 +7,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
 class ExportModelCommand extends Command
 {
     protected static $defaultName = 'page:export';
-    public const YAML_ROUTE = '/pages/model.yaml';
+    public const DIRNAME = '/pages/';
+    public const FILENAME = 'model.yaml';
+
     /**
      * @var KernelInterface
      */
@@ -29,33 +34,52 @@ class ExportModelCommand extends Command
     public function __construct(KernelInterface $kernel, EntityManagerInterface $em)
     {
         $this->kernel = $kernel;
-        parent::__construct();
         $this->em = $em;
+        parent::__construct();
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
         $pagesEntities = $this->em->getRepository(ArtgrisPage::class)->findAll();
 
         $pages = [];
         foreach ($pagesEntities as $pageEntity) {
             $blocks = [];
             foreach ($pageEntity->getBlocks() as $block) {
-                $blocks[$block->getName()] = [
+                $blocks[$block->getSlug()] = [
                     'type' => $block->getType(),
-                    'slug' => $block->getSlug(),
+                    'name' => $block->getName(),
                     'translatable' => $block->isTranslatable(),
                 ];
             }
 
-            $pages[$pageEntity->getName()] = [
+            $pages[$pageEntity->getSlug()] = [
                 'route' => $pageEntity->getRoute(),
-                'slug' => $pageEntity->getSlug(),
+                'name' => $pageEntity->getName(),
                 'blocks' => $blocks,
             ];
         }
 
         $yaml = Yaml::dump($pages, 5);
-        file_put_contents($this->kernel->getProjectDir() . self::YAML_ROUTE, $yaml);
+
+        $filesystem = new Filesystem();
+        $dirName = $this->kernel->getProjectDir().self::DIRNAME;
+        $fileName = $dirName.self::FILENAME;
+        try {
+            $filesystem->mkdir($dirName);
+        } catch (IOExceptionInterface $exception) {
+            echo 'An error occurred while creating your directory at '.$exception->getPath();
+        }
+
+        if (!$io->confirm("Export file already exists ('$fileName'). Do you want to overwrite it?")) {
+            $output->writeln('<error>Export cancelled!</error>');
+
+            return;
+        }
+
+        file_put_contents($fileName, $yaml);
+
+        $output->writeln('<info>Export completed!</info>');
     }
 }

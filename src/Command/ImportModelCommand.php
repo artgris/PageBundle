@@ -5,10 +5,12 @@ namespace Artgris\Bundle\PageBundle\Command;
 use Artgris\Bundle\PageBundle\Entity\ArtgrisBlock;
 use Artgris\Bundle\PageBundle\Entity\ArtgrisPage;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -34,8 +36,8 @@ class ImportModelCommand extends Command
     public function __construct(KernelInterface $kernel, EntityManagerInterface $em)
     {
         $this->kernel = $kernel;
-        parent::__construct();
         $this->em = $em;
+        parent::__construct();
     }
 
     protected function configure()
@@ -46,26 +48,51 @@ class ImportModelCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
+
         $pageRepository = $this->em->getRepository(ArtgrisPage::class);
         $blockRepository = $this->em->getRepository(ArtgrisBlock::class);
 
-        $pages = Yaml::parseFile($this->kernel->getProjectDir() . ExportModelCommand::YAML_ROUTE);
+        $fileName = $this->kernel->getProjectDir().ExportModelCommand::DIRNAME.ExportModelCommand::FILENAME;
+        $pages = Yaml::parseFile($fileName);
 
-        foreach ($pages as $pageName => $page) {
-            $pageEntity = $pageRepository->findOneBy(['slug' => $page['slug']]) ?? new ArtgrisPage();
-
-            $pageEntity->setSlug($page['slug']);
+        foreach ($pages as $pageSlug => $page) {
+            $pageEntity = $pageRepository->findOneBy(['slug' => $pageSlug]);
+            if ($pageEntity === null) {
+                $pageEntity = new ArtgrisPage();
+                $pageEntity->setSlug($pageSlug);
+                $output->writeln('Create page '.$pageSlug);
+            } else {
+                $originalPageEntity = clone $pageEntity;
+            }
             $pageEntity->setRoute($page['route']);
-            $pageEntity->setName($pageName);
+            $pageEntity->setName($page['name']);
+
+            if (isset($originalPageEntity) && !empty($fields = $this->comparePages($originalPageEntity, $pageEntity))) {
+                $output->writeln('Edit page <comment>'.$page['slug'].'</comment> ('.implode(',', $fields).')');
+            }
+
             $this->em->persist($pageEntity);
 
             $position = 0;
-            foreach ($page['blocks'] as $blockName => $block) {
-                $blockEntity = $blockRepository->findOneBy(['slug' => $block['slug']]) ?? new ArtgrisBlock();
-                $blockEntity->setSlug($block['slug']);
+            foreach ($page['blocks'] as $blockSlug => $block) {
+                $blockEntity = $blockRepository->findOneBy(['slug' => $blockSlug]);
+                if ($blockEntity === null) {
+                    $blockEntity = new ArtgrisBlock();
+                    $blockEntity->setSlug($blockSlug);
+                    $output->writeln('Create block '.$blockSlug);
+                } else {
+                    $originalBlockEntity = clone $blockEntity;
+                }
+
                 $blockEntity->setPage($pageEntity);
                 $blockEntity->setPosition($position);
-                $blockEntity->setName($blockName);
+                $blockEntity->setName($block['name']);
+                $blockEntity->setTranslatable($block['translatable']);
+
+                if (isset($originalBlockEntity) && !empty($fields = $this->compareBlocks($originalBlockEntity, $blockEntity))) {
+                    $output->writeln('Edit block <comment>'.$blockSlug.'</comment> ('.implode(',', $fields).')');
+                }
 
                 if ($blockEntity->getType() !== $block['type']) {
                     $blockEntity->setType($block['type']);
@@ -81,14 +108,51 @@ class ImportModelCommand extends Command
                     }
                 }
 
-                $blockEntity->setTranslatable($block['translatable']);
                 $this->em->persist($blockEntity);
 
                 $position++;
             }
         }
 
+        if (!$io->confirm('Executes the queries(flush) ?')) {
+            $output->writeln('<error>Import cancelled!</error>');
+
+            return;
+        }
+
         // confirmation before flush
         $this->em->flush();
+
+        $output->writeln('<info> Import completed!</info>');
+    }
+
+    private function comparePages(ArtgrisPage $origin, ArtgrisPage $update)
+    {
+        $metaData = $this->em->getClassMetadata(ArtgrisPage::class);
+
+        return $this->compareEntity($origin, $update, $metaData, ['name', 'route']);
+    }
+
+    private function compareBlocks(ArtgrisBlock $origin, ArtgrisBlock $update)
+    {
+        $metaData = $this->em->getClassMetadata(ArtgrisBlock::class);
+
+        return $this->compareEntity($origin, $update, $metaData, ['name', 'position', 'translatable']);
+    }
+
+    private function compareEntity($origin, $update, ClassMetadataInfo $metaData, array $fields)
+    {
+        $fieldsUpdate = [];
+
+        foreach ($fields as $field) {
+            $valueOrigin = $metaData->getFieldValue($origin, $field);
+            $valueUpload = $metaData->getFieldValue($update, $field);
+
+            if ($valueOrigin !== $valueUpload) {
+                $fieldsUpdate[] = $field;
+            }
+        }
+
+        return $fieldsUpdate;
     }
 }
