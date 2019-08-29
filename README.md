@@ -191,14 +191,14 @@ Export database model (no values) in a file ("/pages/model.yaml")
  
 /pages/model.yaml extract: 
 ```yaml
-    page-2:
-        route: 'App\Controller\Main\MainController::index'
-        name: 'page 2'
-        blocks:
-            blok-10:
-                type: Artgris\Bundle\PageBundle\Form\Type\ArtgrisTextType
-                name: 'blok 10'
-                translatable: false
+page-2:
+    route: 'App\Controller\Main\MainController::index'
+    name: 'page 2'
+    blocks:
+        blok-10:
+            type: Artgris\Bundle\PageBundle\Form\Type\ArtgrisTextType
+            name: 'blok 10'
+            translatable: false
 ```   
        
 Import model ("/pages/model.yaml") in database
