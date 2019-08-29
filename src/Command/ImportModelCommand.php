@@ -20,7 +20,7 @@ use Symfony\Component\Yaml\Yaml;
 class ImportModelCommand extends Command
 {
     private const REMOVE_DEVIANTS = 'remove-deviants';
-    protected static $defaultName = 'page:import';
+    protected static $defaultName = 'artgris:page:import';
     /**
      * @var KernelInterface
      */
@@ -53,34 +53,40 @@ class ImportModelCommand extends Command
         $pageRepository = $this->em->getRepository(ArtgrisPage::class);
         $blockRepository = $this->em->getRepository(ArtgrisBlock::class);
 
-        $fileName = $this->kernel->getProjectDir().ExportModelCommand::DIRNAME.ExportModelCommand::FILENAME;
+        $fileName = $this->kernel->getProjectDir() . ExportModelCommand::DIRNAME . ExportModelCommand::FILENAME;
         $pages = Yaml::parseFile($fileName);
 
+        $io->title('Operations found:');
+
+        $operations = [];
+
         foreach ($pages as $pageSlug => $page) {
+            $originalPageEntity = null;
             $pageEntity = $pageRepository->findOneBy(['slug' => $pageSlug]);
             if ($pageEntity === null) {
                 $pageEntity = new ArtgrisPage();
                 $pageEntity->setSlug($pageSlug);
-                $output->writeln('Create page '.$pageSlug);
+                $operations[] = "<fg=default;bg=green>Create page '{$pageSlug}'</>";
             } else {
                 $originalPageEntity = clone $pageEntity;
             }
             $pageEntity->setRoute($page['route']);
             $pageEntity->setName($page['name']);
 
-            if (isset($originalPageEntity) && !empty($fields = $this->comparePages($originalPageEntity, $pageEntity))) {
-                $output->writeln('Edit page <comment>'.$page['slug'].'</comment> ('.implode(',', $fields).')');
+            if ($originalPageEntity !== null && !empty($fields = $this->comparePages($originalPageEntity, $pageEntity))) {
+                $operations[] = "<fg=default;bg=yellow>Edit page '" . $pageSlug . "' (" . implode(',', $fields) . ')</>';
             }
 
             $this->em->persist($pageEntity);
 
             $position = 0;
             foreach ($page['blocks'] as $blockSlug => $block) {
+                $originalBlockEntity = null;
                 $blockEntity = $blockRepository->findOneBy(['slug' => $blockSlug]);
                 if ($blockEntity === null) {
                     $blockEntity = new ArtgrisBlock();
                     $blockEntity->setSlug($blockSlug);
-                    $output->writeln('Create block '.$blockSlug);
+                    $operations[] = "<fg=default;bg=green>Create block '{$blockSlug}'</>";
                 } else {
                     $originalBlockEntity = clone $blockEntity;
                 }
@@ -89,41 +95,47 @@ class ImportModelCommand extends Command
                 $blockEntity->setPosition($position);
                 $blockEntity->setName($block['name']);
                 $blockEntity->setTranslatable($block['translatable']);
+                $blockEntity->setType($block['type']);
 
-                if (isset($originalBlockEntity) && !empty($fields = $this->compareBlocks($originalBlockEntity, $blockEntity))) {
-                    $output->writeln('Edit block <comment>'.$blockSlug.'</comment> ('.implode(',', $fields).')');
-                }
 
-                if ($blockEntity->getType() !== $block['type']) {
-                    $blockEntity->setType($block['type']);
+                if ($originalBlockEntity !== null && !empty($fields = $this->compareBlocks($originalBlockEntity, $blockEntity))) {
+                    $operations[] = "<fg=default;bg=yellow>Edit block '" . $blockSlug . "' (" . implode(',', $fields) . ')</>';
 
-                    if ($input->getOption(self::REMOVE_DEVIANTS)) {
-                        $blockEntity->setContent(null);
-                        // delete translations
-                        if ($blockEntity->getTranslations()) {
-                            foreach ($blockEntity->getTranslations() as $translation) {
-                                $blockEntity->removeTranslation($translation);
+                    if ($blockEntity->getType() !== $originalBlockEntity->getType()) {
+
+                        if ($input->getOption(self::REMOVE_DEVIANTS)) {
+                            $blockEntity->setContent(null);
+                            // delete translations
+                            if ($blockEntity->getTranslations()) {
+                                foreach ($blockEntity->getTranslations() as $translation) {
+                                    $blockEntity->removeTranslation($translation);
+                                }
                             }
                         }
                     }
                 }
 
                 $this->em->persist($blockEntity);
-
                 $position++;
             }
         }
 
-        if (!$io->confirm('Executes the queries(flush) ?')) {
-            $output->writeln('<error>Import cancelled!</error>');
+        if (!empty($operations)) {
 
-            return;
+            $io->listing($operations);
+
+            if (!$io->confirm('Executes the queries(flush) ?')) {
+                $io->writeln('<error>Import cancelled!</error>');
+
+                return;
+            }
+
+            // confirmation before flush
+            $this->em->flush();
+            $io->writeln('<info> Import completed!</info>');
+        } else {
+            $io->success('Nothing to do.');
         }
-
-        // confirmation before flush
-        $this->em->flush();
-
-        $output->writeln('<info> Import completed!</info>');
     }
 
     private function comparePages(ArtgrisPage $origin, ArtgrisPage $update)
@@ -137,7 +149,7 @@ class ImportModelCommand extends Command
     {
         $metaData = $this->em->getClassMetadata(ArtgrisBlock::class);
 
-        return $this->compareEntity($origin, $update, $metaData, ['name', 'position', 'translatable']);
+        return $this->compareEntity($origin, $update, $metaData, ['name', 'position', 'translatable', 'type']);
     }
 
     private function compareEntity($origin, $update, ClassMetadataInfo $metaData, array $fields)

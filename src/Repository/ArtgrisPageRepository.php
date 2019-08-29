@@ -33,4 +33,19 @@ class ArtgrisPageRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param array $pages
+     * @return ArtgrisPage[]
+     */
+    public function findPageDiff(array $pages): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.slug not in (:pages)')
+            ->setParameter('pages', $pages)
+            ->getQuery()
+            ->getResult();
+
+    }
+
 }

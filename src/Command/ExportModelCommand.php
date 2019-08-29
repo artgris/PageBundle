@@ -15,7 +15,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class ExportModelCommand extends Command
 {
-    protected static $defaultName = 'page:export';
+    protected static $defaultName = 'artgris:page:export';
     public const DIRNAME = '/pages/';
     public const FILENAME = 'model.yaml';
 
@@ -64,22 +64,25 @@ class ExportModelCommand extends Command
         $yaml = Yaml::dump($pages, 5);
 
         $filesystem = new Filesystem();
-        $dirName = $this->kernel->getProjectDir().self::DIRNAME;
-        $fileName = $dirName.self::FILENAME;
+        $dirName = $this->kernel->getProjectDir() . self::DIRNAME;
+        $fileName = $dirName . self::FILENAME;
         try {
             $filesystem->mkdir($dirName);
         } catch (IOExceptionInterface $exception) {
-            echo 'An error occurred while creating your directory at '.$exception->getPath();
+            $io->error('An error occurred while creating your directory at' . $exception->getPath());
         }
 
-        if (!$io->confirm("Export file already exists ('$fileName'). Do you want to overwrite it?")) {
-            $output->writeln('<error>Export cancelled!</error>');
+        if ($filesystem->exists($fileName)) {
+            $io->caution("Export file already exists ('{$fileName}'). That file will be overwritten.");
+        }
+        if (!$io->confirm('Do you want to generate model file?')) {
+            $io->writeln('<error>Export cancelled!</error>');
 
             return;
         }
 
         file_put_contents($fileName, $yaml);
 
-        $output->writeln('<info>Export completed!</info>');
+        $io->success('Export completed!');
     }
 }
