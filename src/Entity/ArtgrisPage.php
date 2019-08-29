@@ -35,7 +35,7 @@ class ArtgrisPage
 
     /**
      * @Assert\Valid()
-     * @ORM\OneToMany(targetEntity="Artgris\Bundle\PageBundle\Entity\ArtgrisBlock", mappedBy="page", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Artgris\Bundle\PageBundle\Entity\ArtgrisBlock", mappedBy="page", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $blocks;
@@ -128,4 +128,11 @@ class ArtgrisPage
     {
         $this->slug = $slug;
     }
+
+    public function __toString()
+    {
+        return $this->getSlug();
+    }
+
+
 }

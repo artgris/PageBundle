@@ -183,6 +183,36 @@ create a form type that implements PageFromInterface:
 
 Edit the rendering as you wish using the getRenderType method.
 
+## Commands
+
+Export database model (no values) in a file ("/pages/model.yaml")
+
+    php bin/console artgris:page:export
+ 
+/pages/model.yaml extract: 
+```yaml
+page-2:
+    route: 'App\Controller\Main\MainController::index'
+    name: 'page 2'
+    blocks:
+        blok-10:
+            type: Artgris\Bundle\PageBundle\Form\Type\ArtgrisTextType
+            name: 'blok 10'
+            translatable: false
+```   
+       
+Import model ("/pages/model.yaml") in database
+    
+    php bin/console artgris:page:import
+
+add *--remove-deviants* to delete the content of types that have changed (ex: text type in yaml but integer type in bd)
+    
+    php bin/console artgris:page:import --remove-deviants
+        
+Remove extra pages/blocks (in database but not in model.yaml)
+    
+    php bin/console artgris:page:remove:extra
+
 ## Tutorials
 
   * [How to create a TinyMCE Type](doc/tutorials/tinymce.md)
