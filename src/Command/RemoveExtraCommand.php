@@ -38,7 +38,7 @@ class RemoveExtraCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $fileName = $this->kernel->getProjectDir() . ExportModelCommand::DIRNAME . ExportModelCommand::FILENAME;
+        $fileName = $this->kernel->getProjectDir().ExportModelCommand::DIRNAME.ExportModelCommand::FILENAME;
         $pages = Yaml::parseFile($fileName);
 
         $extraPages = $this->em->getRepository(ArtgrisPage::class)->findPageDiff(array_keys($pages));
@@ -64,7 +64,6 @@ class RemoveExtraCommand extends Command
         } else {
             $io->success('No page to delete');
         }
-
 
         $blocks = [];
         foreach ($pages as $page) {
@@ -95,6 +94,5 @@ class RemoveExtraCommand extends Command
         } else {
             $io->success('No block to delete');
         }
-
     }
 }

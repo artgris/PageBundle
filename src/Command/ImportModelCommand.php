@@ -19,8 +19,13 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ImportModelCommand extends Command
 {
-    private const REMOVE_DEVIANTS = 'remove-deviants';
     protected static $defaultName = 'artgris:page:import';
+
+    private const REMOVE_DEVIANTS = 'remove-deviants';
+    private const IGNORE_NAMES = 'ignore-names';
+
+    private const BLOCK_FIELDS = ['name', 'position', 'translatable', 'type'];
+    private const PAGE_FIELDS = ['name', 'route'];
     /**
      * @var KernelInterface
      */
@@ -43,7 +48,9 @@ class ImportModelCommand extends Command
     protected function configure()
     {
         $this
-            ->addOption(self::REMOVE_DEVIANTS, null, InputOption::VALUE_NONE, 'Delete the content of types that have changed');
+            ->addOption(self::REMOVE_DEVIANTS, null, InputOption::VALUE_NONE, 'Delete the content of types that have changed')
+            ->addOption(self::IGNORE_NAMES, null, InputOption::VALUE_NONE, 'Ignore names that have changed'
+            );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -59,6 +66,12 @@ class ImportModelCommand extends Command
         $io->title('Operations found:');
 
         $operations = [];
+        $blockFields = self::BLOCK_FIELDS;
+        $pageFields = self::PAGE_FIELDS;
+
+        if ($input->getOption(self::IGNORE_NAMES)) {
+            unset($blockFields['name'], $pageFields['name']);
+        }
 
         foreach ($pages as $pageSlug => $page) {
             $originalPageEntity = null;
@@ -71,9 +84,11 @@ class ImportModelCommand extends Command
                 $originalPageEntity = clone $pageEntity;
             }
             $pageEntity->setRoute($page['route']);
-            $pageEntity->setName($page['name']);
 
-            if ($originalPageEntity !== null && !empty($fields = $this->comparePages($originalPageEntity, $pageEntity))) {
+            if ($originalPageEntity === null || ($originalPageEntity && !$input->getOption(self::IGNORE_NAMES))) {
+                $pageEntity->setName($page['name']);
+            }
+            if ($originalPageEntity !== null && !empty($fields = $this->comparePages($originalPageEntity, $pageEntity, $pageFields))) {
                 $operations[] = "<fg=default;bg=yellow>Edit page '" . $pageSlug . "' (" . implode(',', $fields) . ')</>';
             }
 
@@ -93,16 +108,21 @@ class ImportModelCommand extends Command
 
                 $blockEntity->setPage($pageEntity);
                 $blockEntity->setPosition($position);
-                $blockEntity->setName($block['name']);
+
+                $requiredNameUpdate = $originalBlockEntity === null || ($originalBlockEntity && !$input->getOption(self::IGNORE_NAMES));
+
+                if ($requiredNameUpdate) {
+                    $blockEntity->setName($block['name']);
+                }
+
                 $blockEntity->setTranslatable($block['translatable']);
                 $blockEntity->setType($block['type']);
 
 
-                if ($originalBlockEntity !== null && !empty($fields = $this->compareBlocks($originalBlockEntity, $blockEntity))) {
+                if ($originalBlockEntity !== null && !empty($fields = $this->compareBlocks($originalBlockEntity, $blockEntity, $blockFields))) {
                     $operations[] = "<fg=default;bg=yellow>Edit block '" . $blockSlug . "' (" . implode(',', $fields) . ')</>';
 
                     if ($blockEntity->getType() !== $originalBlockEntity->getType()) {
-
                         if ($input->getOption(self::REMOVE_DEVIANTS)) {
                             $blockEntity->setContent(null);
                             // delete translations
@@ -121,7 +141,6 @@ class ImportModelCommand extends Command
         }
 
         if (!empty($operations)) {
-
             $io->listing($operations);
 
             if (!$io->confirm('Executes the queries(flush) ?')) {
@@ -138,18 +157,18 @@ class ImportModelCommand extends Command
         }
     }
 
-    private function comparePages(ArtgrisPage $origin, ArtgrisPage $update)
+    private function comparePages(ArtgrisPage $origin, ArtgrisPage $update, array $fields)
     {
         $metaData = $this->em->getClassMetadata(ArtgrisPage::class);
 
-        return $this->compareEntity($origin, $update, $metaData, ['name', 'route']);
+        return $this->compareEntity($origin, $update, $metaData, $fields);
     }
 
-    private function compareBlocks(ArtgrisBlock $origin, ArtgrisBlock $update)
+    private function compareBlocks(ArtgrisBlock $origin, ArtgrisBlock $update, array $fields)
     {
         $metaData = $this->em->getClassMetadata(ArtgrisBlock::class);
 
-        return $this->compareEntity($origin, $update, $metaData, ['name', 'position', 'translatable', 'type']);
+        return $this->compareEntity($origin, $update, $metaData, $fields);
     }
 
     private function compareEntity($origin, $update, ClassMetadataInfo $metaData, array $fields)

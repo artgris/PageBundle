@@ -64,12 +64,12 @@ class ExportModelCommand extends Command
         $yaml = Yaml::dump($pages, 5);
 
         $filesystem = new Filesystem();
-        $dirName = $this->kernel->getProjectDir() . self::DIRNAME;
-        $fileName = $dirName . self::FILENAME;
+        $dirName = $this->kernel->getProjectDir().self::DIRNAME;
+        $fileName = $dirName.self::FILENAME;
         try {
             $filesystem->mkdir($dirName);
         } catch (IOExceptionInterface $exception) {
-            $io->error('An error occurred while creating your directory at' . $exception->getPath());
+            $io->error('An error occurred while creating your directory at'.$exception->getPath());
         }
 
         if ($filesystem->exists($fileName)) {

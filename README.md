@@ -208,7 +208,11 @@ Import model ("/pages/model.yaml") in database
 add *--remove-deviants* to delete the content of types that have changed (ex: text type in yaml but integer type in bd)
     
     php bin/console artgris:page:import --remove-deviants
-        
+    
+add *--ignore-names* to ignore page and bloc names that have changed
+    
+    php bin/console artgris:page:import --ignore-names
+    
 Remove extra pages/blocks (in database but not in model.yaml)
     
     php bin/console artgris:page:remove:extra
