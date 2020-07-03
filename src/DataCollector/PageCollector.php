@@ -35,7 +35,7 @@ class PageCollector extends DataCollector
     /**
      * Collects data for the given Request and Response.
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null)
     {
         $this->data['blocks_list'] = $this->blockExtension->getBlocks();
         $blocks = $this->blockExtension->getBlocksCollection();

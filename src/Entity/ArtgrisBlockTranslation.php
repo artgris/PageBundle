@@ -3,14 +3,23 @@
 namespace Artgris\Bundle\PageBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslationInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 
 /**
  * @ORM\Entity()
  */
-class ArtgrisBlockTranslation
+class ArtgrisBlockTranslation implements TranslationInterface
 {
-    use ORMBehaviors\Translatable\Translation;
+    use TranslationTrait;
+
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
     /**
      * @ORM\Column(type="json", nullable=true)
@@ -27,7 +36,7 @@ class ArtgrisBlockTranslation
         $this->contentTranslatable = $contentTranslatable;
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
 
         foreach (get_object_vars($this) as $var => $value) {
