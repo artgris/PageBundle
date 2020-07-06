@@ -38,7 +38,7 @@ class PageController extends EasyAdminController
             if (\array_key_exists('_controller', $defaults)) {
                 $controller = $defaults['_controller'];
                 foreach ($artgrisConfig['controllers'] as $controllerName) {
-                    if (false !== \mb_strpos($defaults['_controller'], $controllerName)) {
+                    if (false !== mb_strpos($defaults['_controller'], $controllerName)) {
                         if (!\in_array($controller, $routeAll, true)) {
                             $routeAll[$params->getPath()] = $controller;
                         }

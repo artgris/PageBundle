@@ -31,7 +31,7 @@ in config/packages
 
         return [
             ...
-            Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle::class => ['all' => true],
+            Knp\DoctrineBehaviors\DoctrineBehaviorsBundle::class => ['all' => true],
         ];
     
     
