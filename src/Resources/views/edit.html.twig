@@ -5,9 +5,7 @@
     {% include '@ArtgrisPage/_partial/_collection.html.twig' %}
 {% endblock %}
 
-
 {% block page_actions %}
-
     {% if app.request.get('crudAction') == 'editBlocks' %}
         <div class="page-actions">
             <button class="action-saveAndReturn btn btn-primary action-save" type="submit" name="ea[newForm][btn]" value="saveAndReturn" form="edit-ArtgrisPage-form">
