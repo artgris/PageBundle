@@ -125,6 +125,7 @@ class ArtgrisPageCrudController extends AbstractCrudController
             ->allowAdd()
             ->allowDelete()
             ->setLabel('form.blocks.label')
+            ->setTemplatePath('@ArtgrisPage/fields/collection.html.twig')
             ->addJsFiles('bundles/artgrispage/js/jquery.collection.js')
             ->addCssFiles('bundles/artgrispage/style.css');
 

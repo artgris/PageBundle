@@ -146,7 +146,7 @@ class ImportModelCommand extends Command
             if (!$io->confirm('Executes the queries(flush) ?')) {
                 $io->writeln('<error>Import cancelled!</error>');
 
-                return;
+                return Command::SUCCESS;
             }
 
             // confirmation before flush
@@ -155,6 +155,7 @@ class ImportModelCommand extends Command
         } else {
             $io->success('Nothing to do.');
         }
+        return Command::SUCCESS;
     }
 
     private function comparePages(ArtgrisPage $origin, ArtgrisPage $update, array $fields)

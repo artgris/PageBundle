@@ -51,7 +51,7 @@ class RemoveExtraCommand extends Command
             if (!$io->confirm('Are you sure you want to delete these pages?')) {
                 $io->writeln('<error>Delete cancelled!</error>');
 
-                return;
+                return Command::SUCCESS;
             }
 
             foreach ($extraPages as $extraPage) {
@@ -94,5 +94,7 @@ class RemoveExtraCommand extends Command
         } else {
             $io->success('No block to delete');
         }
+
+        return Command::SUCCESS;
     }
 }

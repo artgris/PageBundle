@@ -78,11 +78,13 @@ class ExportModelCommand extends Command
         if (!$io->confirm('Do you want to generate model file?')) {
             $io->writeln('<error>Export cancelled!</error>');
 
-            return;
+            return Command::SUCCESS;
         }
 
         file_put_contents($fileName, $yaml);
 
         $io->success('Export completed!');
+
+        return Command::SUCCESS;
     }
 }
