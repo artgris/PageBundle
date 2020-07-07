@@ -15,10 +15,10 @@ in config/packages
 ### configure KnpLabs/DoctrineBehaviors: https://github.com/KnpLabs/DoctrineBehaviors
     
 - Add locale parameter in services.yaml:
-    
-        parameters:
-            locale: 'en'
-       
+```yaml 
+parameters:
+    locale: 'en'
+```    
 
 - Add to AppKernel: 
     
@@ -44,16 +44,17 @@ public function configureMenuItems(): iterable
 ### add a2lix_translation_form.yaml
 
 ex:
-           
-    a2lix_translation_form:
-        locale_provider: default
-        locales: [fr, en]
-        default_locale: fr
+```yaml          
+a2lix_translation_form:
+    locale_provider: default
+    locales: [fr, en]
+    default_locale: fr
+```
         
 ### add artgris_page.yaml 
 
 not required, no minimal configuration
-    
+```yaml    
     artgris_page:
         controllers: #Namespaces used to load the route selector
             - 'App\Controller\MainController::index'
@@ -69,13 +70,14 @@ not required, no minimal configuration
         default_types: true #load default form types [1]
         hide_route_form: false #to hide the route selector (example of use: one page website)
         redirect_after_update: false #always redirect the user to the configuration page after new/edit action
-        
+```      
 [1] Default form types list:
-
+```yaml
     source: Artgris\Bundle\PageBundle\Service\TypeService
  
             'text' => ArtgrisTextType::class,  => not required TextType
             'textarea' => ArtgrisTextAreaType::class,  => not required TextAreaType with rows = 8 + renderType: \nl2br
+```
 
 ## Usage:
 

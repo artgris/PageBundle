@@ -64,8 +64,8 @@ class ArtgrisPageCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $editBlocksAction = Action::new('editBlocks', false, 'fa fa-pencil')->linkToCrudAction('editBlocks');
-        $editBlocksAction->getAsDto()->setRouteParameters(['lol' => 'olo']);
+        $editBlocksAction = Action::new('editBlocks', false, 'fa fa-pencil')
+            ->linkToCrudAction('editBlocks');
 
         return $actions
             ->disable(Action::DETAIL)
@@ -146,19 +146,11 @@ class ArtgrisPageCrudController extends AbstractCrudController
 
     public function editBlocks(AdminContext $context)
     {
-//
-//        $context->getCrud()->setFormThemes([
-//            '@EasyAdmin/crud/form_theme.html.twig',
-//            '@ArtgrisPage/themes/form.html.twig',
-//            '@ArtgrisPage/themes/edit_blocks.html.twig'
-//        ]);
-//
         $this->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_EDIT)));
-//        $this->get(EntityFactory::class)->processActions($context->getEntity(), $context->getCrud()->getActionsConfig());
         $entityInstance = $context->getEntity()->getInstance();
 
         $parameters = KeyValueStore::new([
-            'attr' => ['class' => 'config-form'],
+            'attr' => ['class' => 'config-form ea-edit-form'],
         ]);
 
         $editForm = $this->createEditForm($context->getEntity(), $parameters, $context);
@@ -174,8 +166,6 @@ class ArtgrisPageCrudController extends AbstractCrudController
 
         $editForm->handleRequest($context->getRequest());
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            // TODO:
-            // $this->processUploadedFiles($editForm);
 
             $event = new BeforeEntityUpdatedEvent($entityInstance);
             $this->get('event_dispatcher')->dispatch($event);
@@ -201,6 +191,7 @@ class ArtgrisPageCrudController extends AbstractCrudController
 
                 return $this->redirect($url);
             }
+
 
             return $this->redirectToRoute($context->getDashboardRouteName());
         }
