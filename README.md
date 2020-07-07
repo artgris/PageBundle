@@ -37,7 +37,7 @@ use Artgris\Bundle\PageBundle\Entity\ArtgrisPage;
 public function configureMenuItems(): iterable
 {
      ...
-     yield MenuItem::linkToCrud('Page', 'fa fa-home', ArtgrisPage::class);
+     yield MenuItem::linkToCrud('Page', 'fa fa-file-alt', ArtgrisPage::class);
 }
 ```
 
@@ -55,28 +55,28 @@ a2lix_translation_form:
 
 not required, no minimal configuration
 ```yaml    
-    artgris_page:
-        controllers: #Namespaces used to load the route selector
-            - 'App\Controller\MainController::index'
-            - 'App\Controller\Main\'
-            - 'App\Controller\'
-            - ... 
-        types: # add your own types
-            -   integer: 'Symfony\Component\Form\Extension\Core\Type\IntegerType'
-            -   date: 'Symfony\Component\Form\Extension\Core\Type\DateType'
-            -   time: 'Symfony\Component\Form\Extension\Core\Type\TimeType'
-            -   custom: 'App\Form\CustomType'
-            - ... 
-        default_types: true #load default form types [1]
-        hide_route_form: false #to hide the route selector (example of use: one page website)
-        redirect_after_update: false #always redirect the user to the configuration page after new/edit action
+artgris_page:
+    controllers: #Namespaces used to load the route selector
+        - 'App\Controller\MainController::index'
+        - 'App\Controller\Main\'
+        - 'App\Controller\'
+        - ... 
+    types: # add your own types
+        -   integer: 'Symfony\Component\Form\Extension\Core\Type\IntegerType'
+        -   date: 'Symfony\Component\Form\Extension\Core\Type\DateType'
+        -   time: 'Symfony\Component\Form\Extension\Core\Type\TimeType'
+        -   custom: 'App\Form\CustomType'
+        - ... 
+    default_types: true #load default form types [1]
+    hide_route_form: false #to hide the route selector (example of use: one page website)
+    redirect_after_update: false #always redirect the user to the configuration page after new/edit action
 ```      
 [1] Default form types list:
 ```yaml
-    source: Artgris\Bundle\PageBundle\Service\TypeService
- 
-            'text' => ArtgrisTextType::class,  => not required TextType
-            'textarea' => ArtgrisTextAreaType::class,  => not required TextAreaType with rows = 8 + renderType: \nl2br
+source: Artgris\Bundle\PageBundle\Service\TypeService
+
+    'text' => ArtgrisTextType::class,  => not required TextType
+    'textarea' => ArtgrisTextAreaType::class,  => not required TextAreaType with rows = 8 + renderType: \nl2br
 ```
 
 ## Usage:
