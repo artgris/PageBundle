@@ -12,71 +12,72 @@ Artgris Page
 
 in config/packages
      
-### add easy_admin.yaml: 
-   
-     imports:
-        - { resource: '@ArtgrisPageBundle/Resources/config/easy_admin.yaml' }
-
 ### configure KnpLabs/DoctrineBehaviors: https://github.com/KnpLabs/DoctrineBehaviors
     
 - Add locale parameter in services.yaml:
-    
-        parameters:
-            locale: 'en'
-       
+```yaml 
+parameters:
+    locale: 'en'
+```    
 
 - Add to AppKernel: 
     
-        <?php
-
-        return [
-            ...
-            Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle::class => ['all' => true],
-        ];
+```php
+return [
+    ...
+    Knp\DoctrineBehaviors\DoctrineBehaviorsBundle::class => ['all' => true],
+];
+```
     
-    
-if you have a custom menu add ArtgrisPage entry:
+- Add to DashboardController.php :
 
-    easy_admin:
-      design:
-          menu:
-              - {entity: ArtgrisPage, label: Pages }
+```php
+use Artgris\Bundle\PageBundle\Entity\ArtgrisPage;
+
+public function configureMenuItems(): iterable
+{
+     ...
+     yield MenuItem::linkToCrud('Page', 'fa fa-file-alt', ArtgrisPage::class);
+}
+```
 
 ### add a2lix_translation_form.yaml
 
 ex:
-           
-    a2lix_translation_form:
-        locale_provider: default
-        locales: [fr, en]
-        default_locale: fr
+```yaml          
+a2lix_translation_form:
+    locale_provider: default
+    locales: [fr, en]
+    default_locale: fr
+```
         
 ### add artgris_page.yaml 
 
 not required, no minimal configuration
-    
-    artgris_page:
-        controllers: #Namespaces used to load the route selector
-            - 'App\Controller\MainController::index'
-            - 'App\Controller\Main\'
-            - 'App\Controller\'
-            - ... 
-        types: # add your own types
-            -   integer: 'Symfony\Component\Form\Extension\Core\Type\IntegerType'
-            -   date: 'Symfony\Component\Form\Extension\Core\Type\DateType'
-            -   time: 'Symfony\Component\Form\Extension\Core\Type\TimeType'
-            -   custom: 'App\Form\CustomType'
-            - ... 
-        default_types: true #load default form types [1]
-        hide_route_form: false #to hide the route selector (example of use: one page website)
-        redirect_after_update: false #always redirect the user to the configuration page after new/edit action
-        
+```yaml    
+artgris_page:
+    controllers: #Namespaces used to load the route selector
+        - 'App\Controller\MainController::index'
+        - 'App\Controller\Main\'
+        - 'App\Controller\'
+        - ... 
+    types: # add your own types
+        -   integer: 'Symfony\Component\Form\Extension\Core\Type\IntegerType'
+        -   date: 'Symfony\Component\Form\Extension\Core\Type\DateType'
+        -   time: 'Symfony\Component\Form\Extension\Core\Type\TimeType'
+        -   custom: 'App\Form\CustomType'
+        - ... 
+    default_types: true #load default form types [1]
+    hide_route_form: false #to hide the route selector (example of use: one page website)
+    redirect_after_update: false #always redirect the user to the configuration page after new/edit action
+```      
 [1] Default form types list:
+```yaml
+source: Artgris\Bundle\PageBundle\Service\TypeService
 
-    source: Artgris\Bundle\PageBundle\Service\TypeService
- 
-            'text' => ArtgrisTextType::class,  => not required TextType
-            'textarea' => ArtgrisTextAreaType::class,  => not required TextAreaType with rows = 8 + renderType: \nl2br
+    'text' => ArtgrisTextType::class,  => not required TextType
+    'textarea' => ArtgrisTextAreaType::class,  => not required TextAreaType with rows = 8 + renderType: \nl2br
+```
 
 ## Usage:
 

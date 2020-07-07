@@ -4,7 +4,8 @@ namespace Artgris\Bundle\PageBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
+use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,9 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @method getContentTranslatable()
  */
-class ArtgrisBlock
+class ArtgrisBlock implements TranslatableInterface
 {
-    use ORMBehaviors\Translatable\Translatable;
+
+    use TranslatableTrait;
 
     /**
      * @ORM\Id()

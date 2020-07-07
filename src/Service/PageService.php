@@ -31,10 +31,13 @@ class PageService
     public function getBlocks()
     {
         if (null === $this->blocks && $request = $this->requestStack->getCurrentRequest()) {
-            $pageBlock = $this->em->getRepository(ArtgrisPage::class)->findByRoute($request->get('_controller'));
-            foreach ($pageBlock as $page) {
-                foreach ($page->getBlocks() as $pageBlock) {
-                    $this->blocks[] = $pageBlock;
+            $_controller = $request->attributes->get('_controller');
+            if (is_string($_controller)) {
+                $pageBlock = $this->em->getRepository(ArtgrisPage::class)->findByRoute($_controller);
+                foreach ($pageBlock as $page) {
+                    foreach ($page->getBlocks() as $pageBlock) {
+                        $this->blocks[] = $pageBlock;
+                    }
                 }
             }
         }

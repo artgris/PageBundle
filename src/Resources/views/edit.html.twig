@@ -1,7 +1,33 @@
-{% extends "@EasyAdmin/default/edit.html.twig" %}
+{% extends "@EasyAdmin/crud/edit.html.twig" %}
+
 {% block body_javascript %}
     {{ parent() }}
     {% include '@ArtgrisPage/_partial/_collection.html.twig' %}
+{% endblock %}
+
+{% block page_actions %}
+    {% if app.request.get('crudAction') == 'editBlocks' %}
+        <div class="page-actions">
+            <button class="action-saveAndReturn btn btn-primary action-save" type="submit" name="ea[newForm][btn]" value="saveAndReturn" form="edit-ArtgrisPage-form">
+                <span class="btn-label">{{ 'action.save'|trans({}, 'EasyAdminBundle') }}</span>
+            </button>
+        </div>
+    {% else %}
+        {% for action in entity.actions %}
+            {% dump action %}
+            {{ include(action.templatePath, { action: action }, with_context = false) }}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+
+{% block content_title %}
+    {% if app.request.get('crudAction') == 'editBlocks' %}
+        {{ 'artgrispage.action.config'|trans }}
+    {% else %}
+        {{ 'artgrispage.action.edit'|trans }}
+    {% endif %}
+
 {% endblock %}
 
 {% block body_class -%}
