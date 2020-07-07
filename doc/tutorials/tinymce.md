@@ -31,17 +31,16 @@
     
     }
 
-2 ) add your TinyMCE js in EasyAdmin 
+2 ) add your TinyMCE js in EasyAdmin DashboardController 
 
-    easy_admin:
-        design:
-            assets:
-                js:
-                    - 'js/tinymce5/tinymce.min.js'
-                    - 'js/tinymce5/plugins/media/plugin.min.js'
-                    - 'js/tinymce5/plugins/image/plugin.min.js'
-                    - 'js/tinymce5/init.js'
-                    ...
+    public function configureAssets(): Assets {
+
+        return Assets::new()
+            ->addJsFile('js/tinymce5/tinymce.min.js')
+            ->addJsFile('js/tinymce5/plugins/media/plugin.min.js')
+            ->addJsFile('js/tinymce5/plugins/image/plugin.min.js')
+            ->addJsFile('js/tinymce5/init.js');
+    }
                     
 3 ) add this new type in PageBundle:
 
