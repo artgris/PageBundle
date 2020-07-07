@@ -12,11 +12,6 @@ Artgris Page
 
 in config/packages
      
-### add easy_admin.yaml: 
-   
-     imports:
-        - { resource: '@ArtgrisPageBundle/Resources/config/easy_admin.yaml' }
-
 ### configure KnpLabs/DoctrineBehaviors: https://github.com/KnpLabs/DoctrineBehaviors
     
 - Add locale parameter in services.yaml:
@@ -27,20 +22,24 @@ in config/packages
 
 - Add to AppKernel: 
     
-        <?php
-
-        return [
-            ...
-            Knp\DoctrineBehaviors\DoctrineBehaviorsBundle::class => ['all' => true],
-        ];
+```php
+return [
+    ...
+    Knp\DoctrineBehaviors\DoctrineBehaviorsBundle::class => ['all' => true],
+];
+```
     
-    
-if you have a custom menu add ArtgrisPage entry:
+- Add to DashboardController.php :
 
-    easy_admin:
-      design:
-          menu:
-              - {entity: ArtgrisPage, label: Pages }
+```php
+use Artgris\Bundle\PageBundle\Entity\ArtgrisPage;
+
+public function configureMenuItems(): iterable
+{
+     ...
+     yield MenuItem::linkToCrud('Page', 'fa fa-home', ArtgrisPage::class);
+}
+```
 
 ### add a2lix_translation_form.yaml
 
