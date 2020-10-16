@@ -4,7 +4,7 @@ namespace Artgris\Bundle\PageBundle\Repository;
 
 use Artgris\Bundle\PageBundle\Entity\ArtgrisPage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method ArtgrisPage|null find($id, $lockMode = null, $lockVersion = null)

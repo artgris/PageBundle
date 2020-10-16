@@ -14,7 +14,6 @@
         </div>
     {% else %}
         {% for action in entity.actions %}
-            {% dump action %}
             {{ include(action.templatePath, { action: action }, with_context = false) }}
         {% endfor %}
     {% endif %}
