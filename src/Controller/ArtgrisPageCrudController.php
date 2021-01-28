@@ -48,11 +48,8 @@ class ArtgrisPageCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Produits')
             ->setPageTitle(Crud::PAGE_INDEX, 'artgrispage.list.title')
             ->setDefaultSort(['name' => 'ASC'])
-            ->setFormThemes([
-                '@EasyAdmin/crud/form_theme.html.twig',
-                '@ArtgrisPage/themes/form.html.twig',
-                '@ArtgrisPage/themes/edit_blocks.html.twig'
-            ])
+            ->addFormTheme('@ArtgrisPage/themes/form.html.twig')
+            ->addFormTheme('@ArtgrisPage/themes/edit_blocks.html.twig')
             ->overrideTemplates([
                 'crud/edit' => '@ArtgrisPage/edit.html.twig',
                 'crud/new' => '@ArtgrisPage/new.html.twig',
