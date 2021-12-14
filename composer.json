@@ -18,7 +18,7 @@
     "require": {
         "a2lix/translation-form-bundle": "^3.0",
         "beberlei/doctrineextensions": "^1.2",
-        "easycorp/easyadmin-bundle": "^3.0",
+        "easycorp/easyadmin-bundle": "~3.5",
         "knplabs/doctrine-behaviors": "^2.0",
         "stof/doctrine-extensions-bundle": "^1.3"
     },
