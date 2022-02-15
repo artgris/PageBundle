@@ -13,28 +13,26 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\InsufficientEntityPermissionException;
 use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Routing\RouterInterface;
 
 class ArtgrisPageCrudController extends AbstractCrudController
 {
     /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
      * ArtgrisPageCrudController constructor.
      */
-    public function __construct(RouterInterface $router)
+    public function __construct(private RouterInterface $router, private AdminUrlGenerator $adminUrlGenerator)
     {
-        $this->router = $router;
     }
 
     public static function getEntityFqcn(): string
@@ -61,7 +59,7 @@ class ArtgrisPageCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $editBlocksAction = Action::new('editBlocks', false, 'fa fa-pencil')
+        $editBlocksAction = Action::new('editBlocks', "artgrispage.action.config", null)
             ->linkToCrudAction('editBlocks');
 
         return $actions
@@ -70,14 +68,14 @@ class ArtgrisPageCrudController extends AbstractCrudController
                 return $action->setLabel('artgrispage.action.new');
             })
             ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
-                return $action->setLabel(false)->setIcon('fa fa-cog');
-            })
-            ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                return $action->setLabel(false)->setIcon('fa fa-trash');
+                return $action->setLabel('artgrispage.action.edit');
             })
             ->add(Crud::PAGE_INDEX, $editBlocksAction);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function configureFields(string $pageName): iterable
     {
         $routeAll = [];
@@ -94,6 +92,10 @@ class ArtgrisPageCrudController extends AbstractCrudController
                     }
                 }
             }
+        }
+
+        if (!$routeAll) {
+            throw new \Exception("Your artgris_page.controllers configuration doesn't return routes");
         }
 
         $fieldName = 'name';
@@ -143,17 +145,31 @@ class ArtgrisPageCrudController extends AbstractCrudController
         ];
     }
 
-    public function editBlocks(AdminContext $context)
-    {
-        $this->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_EDIT)));
+    public function editBlocks(AdminContext $context): KeyValueStore|\Symfony\Component\HttpFoundation\RedirectResponse {
+
+
+        $event = new BeforeCrudActionEvent($context);
+        $this->container->get('event_dispatcher')->dispatch($event);
+        if ($event->isPropagationStopped()) {
+            return $event->getResponse();
+        }
+
+        if (!$this->isGranted(Permission::EA_EXECUTE_ACTION, ['action' => Action::EDIT, 'entity' => null])) {
+            throw new ForbiddenActionException($context);
+        }
+
+        if (!$context->getEntity()->isAccessible()) {
+            throw new InsufficientEntityPermissionException($context);
+        }
+
+        $this->container->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_EDIT)));
+        $context->getCrud()->setFieldAssets($this->getFieldAssets($context->getEntity()->getFields()));
         $entityInstance = $context->getEntity()->getInstance();
 
         $parameters = KeyValueStore::new([
             'attr' => ['class' => 'config-form ea-edit-form'],
         ]);
-
         $editForm = $this->createEditForm($context->getEntity(), $parameters, $context);
-
         $editForm
             ->remove('route')
             ->remove('name')
@@ -164,20 +180,20 @@ class ArtgrisPageCrudController extends AbstractCrudController
             ]);
 
         $editForm->handleRequest($context->getRequest());
+
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
             $event = new BeforeEntityUpdatedEvent($entityInstance);
-            $this->get('event_dispatcher')->dispatch($event);
+            $this->container->get('event_dispatcher')->dispatch($event);
             $entityInstance = $event->getEntityInstance();
 
-            $this->updateEntity($this->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $entityInstance);
+            $this->updateEntity($this->container->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $entityInstance);
 
-            $this->get('event_dispatcher')->dispatch(new AfterEntityUpdatedEvent($entityInstance));
-
-            $submitButtonName = $context->getRequest()->request->get('ea')['newForm']['btn'];
+            $this->container->get('event_dispatcher')->dispatch(new AfterEntityUpdatedEvent($entityInstance));
+            $submitButtonName = $context->getRequest()->get('ea')['newForm']['btn'];
             if (Action::SAVE_AND_CONTINUE === $submitButtonName) {
-                $url = $this->get(CrudUrlGenerator::class)->build()
-                    ->setAction(Action::EDIT)
+                $url = $this->adminUrlGenerator
+                    ->setAction('editBlocks')
                     ->setEntityId($context->getEntity()->getPrimaryKeyValue())
                     ->generateUrl();
 
@@ -186,7 +202,7 @@ class ArtgrisPageCrudController extends AbstractCrudController
 
             if (Action::SAVE_AND_RETURN === $submitButtonName) {
                 $url = $context->getReferrer()
-                    ?? $this->get(CrudUrlGenerator::class)->build()->setAction(Action::INDEX)->generateUrl();
+                    ?? $this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl();
 
                 return $this->redirect($url);
             }

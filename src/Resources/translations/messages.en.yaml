@@ -2,8 +2,8 @@ unexpected_type: You have changed a type that is not compatible with the block d
 artgrispage:
     action:
         new: Add a page
-        edit: Configure a page
-        config: Edit blocks
+        edit: Configure
+        config: Edit
     list:
         title: Pages
 form:

@@ -2,8 +2,8 @@ unexpected_type: Vous avez changé un type qui n'est pas compatible avec les don
 artgrispage:
     action:
         new: Créer une page
-        edit: Configurer une page
-        config: Editer les blocs
+        edit: Configurer
+        config: Éditer
     list:
         title: Pages
 form:

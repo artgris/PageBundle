@@ -7,28 +7,36 @@
 
 {% block page_actions %}
     {% if app.request.get('crudAction') == 'editBlocks' %}
-        <div class="page-actions">
-            <button class="action-saveAndReturn btn btn-primary action-save" type="submit" name="ea[newForm][btn]" value="saveAndReturn" form="edit-ArtgrisPage-form">
-                <span class="btn-label">{{ 'action.save'|trans({}, 'EasyAdminBundle') }}</span>
-            </button>
-        </div>
+<div class="page-actions">
+    <button class="action-saveAndContinue btn btn-secondary action-save" type="submit" name="ea[newForm][btn]" value="saveAndContinue"
+            data-action-name="saveAndContinue" form="edit-ArtgrisPage-form">
+        <span class="btn-label"><i class="action-icon far fa-edit"></i> <span
+                    class="action-label">Sauvegarder et continuer l'édition</span></span>
+    </button>
+
+    <div class="page-actions">
+        <button class="action-saveAndReturn btn btn-primary action-save" type="submit" name="ea[newForm][btn]" value="saveAndReturn"
+                form="edit-ArtgrisPage-form">
+            <span class="btn-label">{{ 'action.save'|trans({}, 'EasyAdminBundle') }}</span>
+        </button>
+    </div>
     {% else %}
         {% for action in entity.actions %}
             {{ include(action.templatePath, { action: action }, with_context = false) }}
         {% endfor %}
     {% endif %}
-{% endblock %}
+    {% endblock %}
 
 
-{% block content_title %}
-    {% if app.request.get('crudAction') == 'editBlocks' %}
-        {{ 'artgrispage.action.config'|trans }}
-    {% else %}
-        {{ 'artgrispage.action.edit'|trans }}
-    {% endif %}
+    {% block content_title %}
+        {% if app.request.get('crudAction') == 'editBlocks' %}
+            {{ 'artgrispage.action.config'|trans }}
+        {% else %}
+            {{ 'artgrispage.action.edit'|trans }}
+        {% endif %}
 
-{% endblock %}
+    {% endblock %}
 
-{% block body_class -%}
+    {% block body_class -%}
     {{ parent() }} artgris-edit-form
 {%- endblock %}
