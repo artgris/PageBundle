@@ -8,35 +8,19 @@ use Artgris\Bundle\PageBundle\Controller\ArtgrisPageCrudController;
 use Artgris\Bundle\PageBundle\Entity\ArtgrisPage;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
-use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class RedirectionSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var CrudUrlGenerator
-     */
-    private $crudUrlGenerator;
-
 
     /**
      * RedirectionSubscriber constructor.
      */
-    public function __construct(RequestStack $requestStack, ParameterBagInterface $parameterBag, CrudUrlGenerator $crudUrlGenerator)
+    public function __construct(private RequestStack $requestStack, private ParameterBagInterface $parameterBag, private AdminUrlGenerator $adminUrlGenerator)
     {
-        $this->requestStack = $requestStack;
-        $this->parameterBag = $parameterBag;
-        $this->crudUrlGenerator = $crudUrlGenerator;
     }
 
     public static function getSubscribedEvents()
@@ -57,7 +41,7 @@ class RedirectionSubscriber implements EventSubscriberInterface
 
             if ($artgrisConfig['redirect_after_update']) {
 
-                $url = $this->crudUrlGenerator->build()
+                $url = $this->adminUrlGenerator
                     ->setController(ArtgrisPageCrudController::class)
                     ->setAction("editBlocks")
                     ->setEntityId($entity->getId())
