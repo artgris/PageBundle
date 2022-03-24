@@ -28,7 +28,7 @@ class BlockConfigType extends AbstractType
                 if ($child instanceof ArtgrisBlock) {
                     $helpTag = '<i class="fa fa-tag"></i> '.$child->getSlug();
 
-                    $typeExists = \class_exists($child->getType());
+                    $typeExists = class_exists($child->getType());
                     $content = [
                         'label' => $child->getName(),
                         'help' => $typeExists ? $helpTag : "{$helpTag} (Type {$child->getType()} not found.)",

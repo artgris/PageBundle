@@ -16,12 +16,12 @@ class ArtgrisTextAreaType extends AbstractType implements PageFromInterface
         ]);
     }
 
-    public static function getRenderType($value)
+    public static function getRenderType($value): string
     {
-        return \nl2br($value);
+        return nl2br($value);
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return TextareaType::class;
     }

@@ -9,10 +9,7 @@ use Twig\TwigFunction;
 
 class BlockExtension extends AbstractExtension
 {
-    /**
-     * @var PageService
-     */
-    private $pageService;
+    private PageService $pageService;
 
     /**
      * @var array
@@ -59,10 +56,10 @@ class BlockExtension extends AbstractExtension
 
         return $this->blocks;
     }
+
     public function getBlocksCollection()
     {
         return $this->blocksCollection;
-
     }
 
     public function getBlock(string $bloc)
@@ -80,7 +77,8 @@ class BlockExtension extends AbstractExtension
         if ($pageBlock) {
             $value = $this->getBlockValue($pageBlock);
             $this->blocks[$pageBlock->getSlug()] = $value;
-            $this->blocksCollection[]= $pageBlock;
+            $this->blocksCollection[] = $pageBlock;
+
             return $value ?? '';
         }
 
@@ -100,7 +98,7 @@ class BlockExtension extends AbstractExtension
 
     public function getRegexBlock(string $bloc): string
     {
-        return \implode('', $this->getRegexArrayBlock($bloc));
+        return implode('', $this->getRegexArrayBlock($bloc));
     }
 
     private function getBlockValue(ArtgrisBlock $pageBlock)
@@ -110,7 +108,7 @@ class BlockExtension extends AbstractExtension
         $class = $pageBlock->getType();
         $function = 'getRenderType';
 
-        if (\class_exists($class) && \method_exists($class, $function)) {
+        if (class_exists($class) && method_exists($class, $function)) {
             $value = \call_user_func([$class, $function], $value);
         }
 

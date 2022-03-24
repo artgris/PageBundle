@@ -15,14 +15,8 @@ use Symfony\Component\Yaml\Yaml;
 class RemoveExtraCommand extends Command
 {
     protected static $defaultName = 'artgris:page:remove:extra';
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private KernelInterface $kernel;
+    private EntityManagerInterface $em;
 
     /**
      * ExportPageCommand constructor.
@@ -34,7 +28,7 @@ class RemoveExtraCommand extends Command
         parent::__construct();
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -81,7 +75,7 @@ class RemoveExtraCommand extends Command
             if (!$io->confirm('Are you sure you want to delete these blocks?')) {
                 $io->writeln('<error>Delete cancelled!</error>');
 
-                return;
+                return Command::FAILURE;
             }
 
             foreach ($extraBlocks as $extraBlock) {

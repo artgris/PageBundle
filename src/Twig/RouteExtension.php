@@ -8,10 +8,7 @@ use Twig\TwigFilter;
 
 class RouteExtension extends AbstractExtension
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     /**
      * RouteExtension constructor.

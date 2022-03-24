@@ -12,10 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BlockType extends AbstractType
 {
-    /**
-     * @var TypeService
-     */
-    private $typeService;
+    private TypeService $typeService;
 
     /**
      * BlockType constructor.
@@ -67,7 +64,7 @@ class BlockType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'BlockType';
     }

@@ -23,7 +23,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
+use Exception;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 
 class ArtgrisPageCrudController extends AbstractCrudController
@@ -59,22 +61,18 @@ class ArtgrisPageCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $editBlocksAction = Action::new('editBlocks', "artgrispage.action.config", null)
+        $editBlocksAction = Action::new('editBlocks', 'artgrispage.action.config', null)
             ->linkToCrudAction('editBlocks');
 
         return $actions
             ->disable(Action::DETAIL)
-            ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
-                return $action->setLabel('artgrispage.action.new');
-            })
-            ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
-                return $action->setLabel('artgrispage.action.edit');
-            })
+            ->update(Crud::PAGE_INDEX, Action::NEW, fn (Action $action): Action => $action->setLabel('artgrispage.action.new'))
+            ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action): Action => $action->setLabel('artgrispage.action.edit'))
             ->add(Crud::PAGE_INDEX, $editBlocksAction);
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function configureFields(string $pageName): iterable
     {
@@ -95,7 +93,7 @@ class ArtgrisPageCrudController extends AbstractCrudController
         }
 
         if (!$routeAll) {
-            throw new \Exception("Your artgris_page.controllers configuration doesn't return routes");
+            throw new Exception("Your artgris_page.controllers configuration doesn't return routes");
         }
 
         $fieldName = 'name';
@@ -110,7 +108,8 @@ class ArtgrisPageCrudController extends AbstractCrudController
         $fieldBlocks = CollectionField::new('blocks')
             ->setRequired(false)
             ->setEntryType(BlockType::class)
-            ->setFormTypeOptions([
+            ->setFormTypeOptions(
+                [
                     'by_reference' => false,
                     'attr' => [
                         'class' => 'artgris-page-collection',
@@ -145,9 +144,8 @@ class ArtgrisPageCrudController extends AbstractCrudController
         ];
     }
 
-    public function editBlocks(AdminContext $context): KeyValueStore|\Symfony\Component\HttpFoundation\RedirectResponse {
-
-
+    public function editBlocks(AdminContext $context): KeyValueStore|RedirectResponse
+    {
         $event = new BeforeCrudActionEvent($context);
         $this->container->get('event_dispatcher')->dispatch($event);
         if ($event->isPropagationStopped()) {
@@ -176,13 +174,12 @@ class ArtgrisPageCrudController extends AbstractCrudController
             ->remove('slug')
             ->add('blocks', CollectionType::class, [
                 'entry_type' => BlockConfigType::class,
-                'block_prefix' => 'art_block'
+                'block_prefix' => 'art_block',
             ]);
 
         $editForm->handleRequest($context->getRequest());
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-
             $event = new BeforeEntityUpdatedEvent($entityInstance);
             $this->container->get('event_dispatcher')->dispatch($event);
             $entityInstance = $event->getEntityInstance();
@@ -207,10 +204,8 @@ class ArtgrisPageCrudController extends AbstractCrudController
                 return $this->redirect($url);
             }
 
-
             return $this->redirectToRoute($context->getDashboardRouteName());
         }
-
 
         return $this->configureResponseParameters(KeyValueStore::new([
             'pageName' => Crud::PAGE_EDIT,

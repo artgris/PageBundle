@@ -7,10 +7,7 @@ use Artgris\Bundle\PageBundle\Form\Type\ArtgrisTextType;
 
 class TypeService
 {
-    /**
-     * @var array
-     */
-    private $config;
+    private array $config;
 
     /**
      * TypeService constructor.

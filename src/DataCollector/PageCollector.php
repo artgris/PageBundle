@@ -2,7 +2,6 @@
 
 namespace Artgris\Bundle\PageBundle\DataCollector;
 
-use Artgris\Bundle\PageBundle\Entity\ArtgrisPage;
 use Artgris\Bundle\PageBundle\Twig\BlockExtension;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,17 +10,12 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\Yaml\Yaml;
+use Throwable;
 
 class PageCollector extends DataCollector
 {
-    /**
-     * @var BlockExtension
-     */
-    private $blockExtension;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private BlockExtension $blockExtension;
+    private EntityManagerInterface $em;
 
     /**
      * PageCollector constructor.
@@ -35,21 +29,18 @@ class PageCollector extends DataCollector
     /**
      * Collects data for the given Request and Response.
      */
-    public function collect(Request $request, Response $response, \Throwable $exception = null)
+    public function collect(Request $request, Response $response, Throwable $exception = null)
     {
         $this->data['blocks_list'] = $this->blockExtension->getBlocks();
         $blocks = $this->blockExtension->getBlocksCollection();
         $this->data['blocks'] = [];
         if ($blocks) {
             foreach ($blocks as $block) {
-
                 $this->data['blocks'][$block->getPage()->getRoute()][$block->getPage()->getName()][] = $block;
             }
         }
 
         krsort($this->data['blocks']);
-
-
     }
 
     /**
@@ -57,7 +48,7 @@ class PageCollector extends DataCollector
      *
      * @return string The collector name
      */
-    public function getName()
+    public function getName(): string
     {
         return 'artgrispage';
     }
@@ -78,23 +69,23 @@ class PageCollector extends DataCollector
     }
 
     // source: easyadmin
-    public function dump($variable)
+    public function dump($variable): bool|string
     {
-        if (\class_exists(HtmlDumper::class)) {
+        if (class_exists(HtmlDumper::class)) {
             $cloner = new VarCloner();
             $dumper = new HtmlDumper();
 
-            $dumper->dump($cloner->cloneVar($variable), $output = \fopen('php://memory', 'rb+'));
-            if (false !== $dumpedData = \stream_get_contents($output, -1, 0)) {
+            $dumper->dump($cloner->cloneVar($variable), $output = fopen('php://memory', 'rb+'));
+            if (false !== $dumpedData = stream_get_contents($output, -1, 0)) {
                 return $dumpedData;
             }
         }
 
-        if (\class_exists(Yaml::class)) {
-            return \sprintf('<pre class="sf-dump">%s</pre>', Yaml::dump((array)$variable, 1024));
+        if (class_exists(Yaml::class)) {
+            return sprintf('<pre class="sf-dump">%s</pre>', Yaml::dump((array) $variable, 1024));
         }
 
-        return \sprintf('<pre class="sf-dump">%s</pre>', \var_export($variable, true));
+        return sprintf('<pre class="sf-dump">%s</pre>', var_export($variable, true));
     }
 
     public function getNbBlocks()

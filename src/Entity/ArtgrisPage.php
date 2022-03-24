@@ -2,50 +2,39 @@
 
 namespace Artgris\Bundle\PageBundle\Entity;
 
+use Artgris\Bundle\PageBundle\Repository\ArtgrisPageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="Artgris\Bundle\PageBundle\Repository\ArtgrisPageRepository")
- */
+#[ORM\Entity(repositoryClass: ArtgrisPageRepository::class)]
 class ArtgrisPage
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    private ?string $name = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $route = null;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=200)
-     * @Assert\NotBlank()
+     * @var Collection<ArtgrisBlock>
      */
-    protected $name;
+    #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'page', targetEntity: ArtgrisBlock::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    private Collection $blocks;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=200, nullable=true)
-     */
-    protected $route;
-
-    /**
-     * @Assert\Valid()
-     * @ORM\OneToMany(targetEntity="Artgris\Bundle\PageBundle\Entity\ArtgrisBlock", mappedBy="page", orphanRemoval=true, cascade={"persist", "remove"})
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
-    private $blocks;
-
-    /**
-     * @var string
-     * @Gedmo\Slug(fields={"name"}, updatable=false)
-     * @ORM\Column(length=128, unique=true)
-     */
-    private $slug;
+    #[ORM\Column(type: 'string', length: 128, unique: true)]
+    #[Gedmo\Slug(fields: ['name'], updatable: false)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -67,12 +56,34 @@ class ArtgrisPage
         $this->name = $name;
     }
 
-    /**
-     * @return Collection|ArtgrisBlock[]
-     */
-    public function getBlocks(): Collection
+    public function getRoute(): ?string
+    {
+        return $this->route;
+    }
+
+    public function setRoute(?string $route): void
+    {
+        $this->route = $route;
+    }
+
+    public function getBlocks(): ArrayCollection|Collection
     {
         return $this->blocks;
+    }
+
+    public function setBlocks(ArrayCollection|Collection $blocks): void
+    {
+        $this->blocks = $blocks;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): void
+    {
+        $this->slug = $slug;
     }
 
     public function addBlock(ArtgrisBlock $block): self
@@ -97,42 +108,8 @@ class ArtgrisPage
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getRoute(): ?string
-    {
-        return $this->route;
-    }
-
-    /**
-     * @param string $route
-     */
-    public function setRoute(?string $route): void
-    {
-        $this->route = $route;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     */
-    public function setSlug(?string $slug): void
-    {
-        $this->slug = $slug;
-    }
-
     public function __toString()
     {
         return $this->getSlug();
     }
-
-
 }
