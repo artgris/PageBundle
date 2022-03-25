@@ -36,6 +36,9 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('redirect_after_update')
                     ->defaultFalse()
                 ->end()
+                ->booleanNode('use_multiple_a2lix_form')
+                    ->defaultFalse()
+                ->end()
             ->end();
 
         return $treeBuilder;

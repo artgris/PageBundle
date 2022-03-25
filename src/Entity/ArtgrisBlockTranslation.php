@@ -17,7 +17,7 @@ class ArtgrisBlockTranslation implements TranslationInterface
     private ?int $id = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    private mixed $contentTranslatable;
+    private mixed $contentTranslatable = null;
 
     public function getId(): ?int
     {

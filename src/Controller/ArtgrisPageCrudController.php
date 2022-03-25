@@ -44,7 +44,9 @@ class ArtgrisPageCrudController extends AbstractCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud
+        $artgrisConfig = $this->getParameter('artgrispage.config');
+
+        $crud
             ->setEntityLabelInPlural('Produits')
             ->setPageTitle(Crud::PAGE_INDEX, 'artgrispage.list.title')
             ->setDefaultSort(['name' => 'ASC'])
@@ -57,6 +59,14 @@ class ArtgrisPageCrudController extends AbstractCrudController
             ->setPageTitle('index', 'artgrispage.list.title')
             ->setPageTitle('new', 'artgrispage.action.new')
             ->setPageTitle('edit', 'artgrispage.action.edit');
+
+        if ($artgrisConfig['use_multiple_a2lix_form']) {
+            $crud->addFormTheme('@ArtgrisPage/themes/a2lix/multiple_form.html.twig');
+         } else {
+            $crud->addFormTheme('@ArtgrisPage/themes/a2lix/form.html.twig');
+        }
+
+        return $crud;
     }
 
     public function configureActions(Actions $actions): Actions
@@ -66,8 +76,8 @@ class ArtgrisPageCrudController extends AbstractCrudController
 
         return $actions
             ->disable(Action::DETAIL)
-            ->update(Crud::PAGE_INDEX, Action::NEW, fn (Action $action): Action => $action->setLabel('artgrispage.action.new'))
-            ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action): Action => $action->setLabel('artgrispage.action.edit'))
+            ->update(Crud::PAGE_INDEX, Action::NEW, fn(Action $action): Action => $action->setLabel('artgrispage.action.new'))
+            ->update(Crud::PAGE_INDEX, Action::EDIT, fn(Action $action): Action => $action->setLabel('artgrispage.action.edit'))
             ->add(Crud::PAGE_INDEX, $editBlocksAction);
     }
 
@@ -160,7 +170,10 @@ class ArtgrisPageCrudController extends AbstractCrudController
             throw new InsufficientEntityPermissionException($context);
         }
 
-        $this->container->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_EDIT)));
+        $this->container->get(EntityFactory::class)->processFields(
+            $context->getEntity(),
+            FieldCollection::new($this->configureFields(Crud::PAGE_EDIT))
+        );
         $context->getCrud()->setFieldAssets($this->getFieldAssets($context->getEntity()->getFields()));
         $entityInstance = $context->getEntity()->getInstance();
 
@@ -207,11 +220,13 @@ class ArtgrisPageCrudController extends AbstractCrudController
             return $this->redirectToRoute($context->getDashboardRouteName());
         }
 
-        return $this->configureResponseParameters(KeyValueStore::new([
-            'pageName' => Crud::PAGE_EDIT,
-            'templateName' => 'crud/edit',
-            'edit_form' => $editForm,
-            'entity' => $context->getEntity(),
-        ]));
+        return $this->configureResponseParameters(
+            KeyValueStore::new([
+                'pageName' => Crud::PAGE_EDIT,
+                'templateName' => 'crud/edit',
+                'edit_form' => $editForm,
+                'entity' => $context->getEntity(),
+            ])
+        );
     }
 }

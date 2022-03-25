@@ -4,6 +4,7 @@ artgrispage:
         new: Créer une page
         edit: Configurer
         config: Éditer
+        cancel_edit: Annuler et configurer
     list:
         title: Pages
 form:
@@ -34,6 +35,7 @@ type:
     textarea: Textarea
     tiny_mce: TinyMCE
     meta: Meta SEO
+    section: Section
 
 collection:
     add_bloc: Ajouter un bloc

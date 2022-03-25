@@ -1,47 +1,20 @@
-{% block art_block_row %}
-    <div class="row justify-content-center">
-        <div class="col-10">
-            {{- form_widget(form) -}}
-        </div>
-    </div>
-{% endblock %}
-
 {% block collection_entry_widget %}
     {{ form_widget(form) }}
 {% endblock collection_entry_widget %}
 
-{% block a2lix_translations_label %}{% endblock %}
-
-{% block a2lix_translations_widget %}
-    {{ form_errors(form) }}
-    <div class="a2lix_translations">
-        <ul class="a2lix_translationsLocales nav nav-tabs" role="tablist">
-            {% for translationsFields in form %}
-                {% set locale = translationsFields.vars.name %}
-                <li class="nav-item">
-                    <a href="#{{ translationsFields.vars.id }}_a2lix_translations-fields"
-                       class="nav-link {% if app.request.locale == locale %}active{% endif %}" data-bs-toggle="tab" role="tab">
-                        {{ translationsFields.vars.label|default(locale|humanize)|trans }}
-                        {% if translationsFields.vars.required %}*{% endif %}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-        <div class="a2lix_translationsFields tab-content">
-            {% for translationsFields in form %}
-                {% set locale = translationsFields.vars.name %}
-
-                <div id="{{ translationsFields.vars.id }}_a2lix_translations-fields"
-                     class="tab-pane {% if app.request.locale == locale %}show active{% endif %} {% if not form.vars.valid %}sonata-ba-field-error{% endif %}"
-                     role="tabpanel">
-                    {{ form_errors(translationsFields) }}
-                    {{ form_widget(translationsFields) }}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-{% endblock %}
+{% block collection_entry_label %}{% endblock  %}
 
 {% block a2lix_translationsForms_widget %}
     {{ block('a2lix_translations_widget') }}
 {% endblock %}
+
+{%- block art_section_label -%}
+    <h2 class="p-2 mt-1 mb-0">{{ label }}</h2>
+{%- endblock -%}
+
+{%- block art_section_row -%}
+    {{ form_label(form) }}
+    {{ form_widget(form) }}
+{%- endblock -%}
+
+{% block a2lix_translations_label %}{% endblock %}

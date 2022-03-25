@@ -4,6 +4,7 @@ artgrispage:
         new: Add a page
         edit: Configure
         config: Edit
+        cancel_edit: Cancel and configure
     list:
         title: Pages
 form:
