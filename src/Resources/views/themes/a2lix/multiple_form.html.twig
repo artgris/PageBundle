@@ -16,7 +16,7 @@
                     <a href="#{{ translationsFields.vars.id }}_a2lix_translations-fields"
                        class="nav-link {% if app.request.locale == locale %}active{% endif %}" data-bs-toggle="tab" role="tab">
                         {{ translationsFields.vars.label|default(locale|humanize)|trans }}
-                        {% if translationsFields.vars.required %}*{% endif %}
+{#                        {% if translationsFields.vars.required %}*{% endif %}#}
                     </a>
                 </li>
             {% endfor %}
