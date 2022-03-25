@@ -35,6 +35,7 @@ type:
     textarea: Textarea
     tiny_mce: TinyMCE
     meta: Meta SEO
+    section: Section
 
 collection:
     add_bloc: Add a block
