@@ -33,7 +33,6 @@ class ArtgrisBlockRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $blocks
      * @return ArtgrisBlock[]
      */
     public function findBlockDiff(array $blocks): array
@@ -43,6 +42,5 @@ class ArtgrisBlockRepository extends ServiceEntityRepository
             ->setParameter('blocks', $blocks)
             ->getQuery()
             ->getResult();
-
     }
 }

@@ -19,14 +19,8 @@ class ExportModelCommand extends Command
     public const DIRNAME = '/pages/';
     public const FILENAME = 'model.yaml';
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private KernelInterface $kernel;
+    private EntityManagerInterface $em;
 
     /**
      * ExportPageCommand constructor.
@@ -38,7 +32,7 @@ class ExportModelCommand extends Command
         parent::__construct();
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $pagesEntities = $this->em->getRepository(ArtgrisPage::class)->findAll();

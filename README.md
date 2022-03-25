@@ -70,13 +70,15 @@ artgris_page:
     default_types: true #load default form types [1]
     hide_route_form: false #to hide the route selector (example of use: one page website)
     redirect_after_update: false #always redirect the user to the configuration page after new/edit action
+    use_multiple_a2lix_form: false #to use multiple a2lix form
 ```      
 [1] Default form types list:
 ```yaml
 source: Artgris\Bundle\PageBundle\Service\TypeService
 
-    'text' => ArtgrisTextType::class,  => not required TextType
-    'textarea' => ArtgrisTextAreaType::class,  => not required TextAreaType with rows = 8 + renderType: \nl2br
+    'type.text' => ArtgrisTextType::class,  => not required TextType
+    'type.textarea' => ArtgrisTextAreaType::class,  => not required TextAreaType with rows = 8 + renderType: \nl2br
+    'type.section' => SectionType::class => h2 section, type hidden, to delimit "blocks"
 ```
 
 ## Usage:

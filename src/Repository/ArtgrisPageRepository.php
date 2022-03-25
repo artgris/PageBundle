@@ -20,8 +20,6 @@ class ArtgrisPageRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string|null $route
-     *
      * @return ArtgrisPage[]
      */
     public function findByRoute(string $route = null): array
@@ -35,7 +33,6 @@ class ArtgrisPageRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $pages
      * @return ArtgrisPage[]
      */
     public function findPageDiff(array $pages): array
@@ -45,7 +42,5 @@ class ArtgrisPageRepository extends ServiceEntityRepository
             ->setParameter('pages', $pages)
             ->getQuery()
             ->getResult();
-
     }
-
 }

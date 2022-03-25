@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Artgris\Bundle\PageBundle\EventSubscriber;
-
 
 use Artgris\Bundle\PageBundle\Controller\ArtgrisPageCrudController;
 use Artgris\Bundle\PageBundle\Entity\ArtgrisPage;
@@ -15,7 +13,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RedirectionSubscriber implements EventSubscriberInterface
 {
-
     /**
      * RedirectionSubscriber constructor.
      */
@@ -23,7 +20,7 @@ class RedirectionSubscriber implements EventSubscriberInterface
     {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AfterEntityPersistedEvent::class => ['redirectToConfiguration'],
@@ -35,21 +32,17 @@ class RedirectionSubscriber implements EventSubscriberInterface
     {
         $request = $this->requestStack->getCurrentRequest();
         $entity = $event->getEntityInstance();
-        if ($request && $entity instanceof ArtgrisPage && in_array($request->get('crudAction'), ['edit', 'new'])) {
-
+        if ($request && $entity instanceof ArtgrisPage && \in_array($request->get('crudAction'), ['edit', 'new'])) {
             $artgrisConfig = $this->parameterBag->get('artgrispage.config');
 
             if ($artgrisConfig['redirect_after_update']) {
-
                 $url = $this->adminUrlGenerator
                     ->setController(ArtgrisPageCrudController::class)
-                    ->setAction("editBlocks")
+                    ->setAction('editBlocks')
                     ->setEntityId($entity->getId())
                     ->generateUrl();
-                ;
 
                 $request->query->set('referrer', $url);
-
             }
         }
     }

@@ -10,14 +10,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class PageService
 {
     private $blocks;
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private RequestStack $requestStack;
+    private EntityManagerInterface $em;
 
     /**
      * PageService constructor.
@@ -32,7 +26,7 @@ class PageService
     {
         if (null === $this->blocks && $request = $this->requestStack->getCurrentRequest()) {
             $_controller = $request->attributes->get('_controller');
-            if (is_string($_controller)) {
+            if (\is_string($_controller)) {
                 $pageBlock = $this->em->getRepository(ArtgrisPage::class)->findByRoute($_controller);
                 foreach ($pageBlock as $page) {
                     foreach ($page->getBlocks() as $pageBlock) {

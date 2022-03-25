@@ -10,9 +10,9 @@ class Configuration implements ConfigurationInterface
     /**
      * Generates the configuration tree builder.
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder
+     * @return TreeBuilder The tree builder
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('artgris_page');
         $treeBuilder->getRootNode()
@@ -34,6 +34,9 @@ class Configuration implements ConfigurationInterface
                     ->defaultFalse()
                 ->end()
                 ->booleanNode('redirect_after_update')
+                    ->defaultFalse()
+                ->end()
+                ->booleanNode('use_multiple_a2lix_form')
                     ->defaultFalse()
                 ->end()
             ->end();

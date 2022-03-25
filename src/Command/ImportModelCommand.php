@@ -26,14 +26,8 @@ class ImportModelCommand extends Command
 
     private const BLOCK_FIELDS = ['name', 'position', 'translatable', 'type'];
     private const PAGE_FIELDS = ['name', 'route'];
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private KernelInterface $kernel;
+    private EntityManagerInterface $em;
 
     /**
      * ExportPageCommand constructor.
@@ -49,18 +43,22 @@ class ImportModelCommand extends Command
     {
         $this
             ->addOption(self::REMOVE_DEVIANTS, null, InputOption::VALUE_NONE, 'Delete the content of types that have changed')
-            ->addOption(self::IGNORE_NAMES, null, InputOption::VALUE_NONE, 'Ignore names that have changed'
+            ->addOption(
+                self::IGNORE_NAMES,
+                null,
+                InputOption::VALUE_NONE,
+                'Ignore names that have changed'
             );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
         $pageRepository = $this->em->getRepository(ArtgrisPage::class);
         $blockRepository = $this->em->getRepository(ArtgrisBlock::class);
 
-        $fileName = $this->kernel->getProjectDir() . ExportModelCommand::DIRNAME . ExportModelCommand::FILENAME;
+        $fileName = $this->kernel->getProjectDir().ExportModelCommand::DIRNAME.ExportModelCommand::FILENAME;
         $pages = Yaml::parseFile($fileName);
 
         $io->title('Operations found:');
@@ -89,7 +87,7 @@ class ImportModelCommand extends Command
                 $pageEntity->setName($page['name']);
             }
             if ($originalPageEntity !== null && !empty($fields = $this->comparePages($originalPageEntity, $pageEntity, $pageFields))) {
-                $operations[] = "<fg=default;bg=yellow>Edit page '" . $pageSlug . "' (" . implode(',', $fields) . ')</>';
+                $operations[] = "<fg=default;bg=yellow>Edit page '".$pageSlug."' (".implode(',', $fields).')</>';
             }
 
             $this->em->persist($pageEntity);
@@ -118,9 +116,8 @@ class ImportModelCommand extends Command
                 $blockEntity->setTranslatable($block['translatable']);
                 $blockEntity->setType($block['type']);
 
-
                 if ($originalBlockEntity !== null && !empty($fields = $this->compareBlocks($originalBlockEntity, $blockEntity, $blockFields))) {
-                    $operations[] = "<fg=default;bg=yellow>Edit block '" . $blockSlug . "' (" . implode(',', $fields) . ')</>';
+                    $operations[] = "<fg=default;bg=yellow>Edit block '".$blockSlug."' (".implode(',', $fields).')</>';
 
                     if ($blockEntity->getType() !== $originalBlockEntity->getType()) {
                         if ($input->getOption(self::REMOVE_DEVIANTS)) {
@@ -136,7 +133,7 @@ class ImportModelCommand extends Command
                 }
 
                 $this->em->persist($blockEntity);
-                $position++;
+                ++$position;
             }
         }
 
@@ -155,6 +152,7 @@ class ImportModelCommand extends Command
         } else {
             $io->success('Nothing to do.');
         }
+
         return Command::SUCCESS;
     }
 

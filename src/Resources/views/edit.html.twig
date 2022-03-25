@@ -8,10 +8,20 @@
 {% block page_actions %}
     {% if app.request.get('crudAction') == 'editBlocks' %}
 <div class="page-actions">
+
+    {% set url = ea_url()
+        .setController('Artgris\\Bundle\\PageBundle\\Controller\\ArtgrisPageCrudController')
+        .setAction('edit')
+        .setEntityId(entity.primaryKeyValue)
+    %}
+
+    <a class="btn btn-secondary text-danger" href="{{ url }}"><i class="action-icon fa fa-gear"></i> <span
+                class="action-label">{{ 'artgrispage.action.cancel_edit'|trans }}</span></a>
+
     <button class="action-saveAndContinue btn btn-secondary action-save" type="submit" name="ea[newForm][btn]" value="saveAndContinue"
             data-action-name="saveAndContinue" form="edit-ArtgrisPage-form">
         <span class="btn-label"><i class="action-icon far fa-edit"></i> <span
-                    class="action-label">Sauvegarder et continuer l'édition</span></span>
+                    class="action-label">{{ 'action.save_and_continue'|trans({}, 'EasyAdminBundle') }}</span></span>
     </button>
 
     <div class="page-actions">

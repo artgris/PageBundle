@@ -4,13 +4,11 @@ namespace Artgris\Bundle\PageBundle\Service;
 
 use Artgris\Bundle\PageBundle\Form\Type\ArtgrisTextAreaType;
 use Artgris\Bundle\PageBundle\Form\Type\ArtgrisTextType;
+use Artgris\Bundle\PageBundle\Form\Type\SectionType;
 
 class TypeService
 {
-    /**
-     * @var array
-     */
-    private $config;
+    private array $config;
 
     /**
      * TypeService constructor.
@@ -25,6 +23,7 @@ class TypeService
         $typesList = $this->config['default_types'] ? [
             'type.text' => ArtgrisTextType::class,
             'type.textarea' => ArtgrisTextAreaType::class,
+            'type.section' => SectionType::class,
         ] : [];
 
         foreach ($this->config['types'] as $types) {

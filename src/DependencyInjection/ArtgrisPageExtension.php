@@ -2,6 +2,8 @@
 
 namespace Artgris\Bundle\PageBundle\DependencyInjection;
 
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -13,7 +15,7 @@ class ArtgrisPageExtension extends Extension implements PrependExtensionInterfac
     /**
      * Loads a specific configuration.
      *
-     * @throws \InvalidArgumentException When provided tag is not defined in this extension
+     * @throws InvalidArgumentException When provided tag is not defined in this extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -32,14 +34,14 @@ class ArtgrisPageExtension extends Extension implements PrependExtensionInterfac
         $loader->load('extensions.yaml');
     }
 
-    private function processConfigFiles(array $configs)
+    private function processConfigFiles(array $configs): array
     {
         foreach ($configs as $i => $config) {
             if (\array_key_exists('types', $config)) {
                 foreach ($config['types'] as $types) {
                     foreach ($types as $key => $typeName) {
-                        if (!\class_exists($typeName)) {
-                            throw new \RuntimeException(\sprintf('Type "%s" not found.', $typeName));
+                        if (!class_exists($typeName)) {
+                            throw new RuntimeException(sprintf('Type "%s" not found.', $typeName));
                         }
                     }
                 }
