@@ -39,7 +39,6 @@ class ArtgrisBlock implements TranslatableInterface
 
     #[ORM\ManyToOne(targetEntity: ArtgrisPage::class, inversedBy: 'blocks')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Gedmo\SortableGroup()]
     private ?ArtgrisPage $page = null;
 
     #[ORM\Column(type: 'string', length: 128, unique:true)]
