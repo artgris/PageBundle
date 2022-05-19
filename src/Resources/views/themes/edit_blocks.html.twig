@@ -2,6 +2,10 @@
     {{ form_widget(form) }}
 {% endblock collection_entry_widget %}
 
+{% block collection_entry_row %}
+    {{ form_row(form) }}
+{% endblock  %}
+
 {% block collection_entry_label %}{% endblock  %}
 
 {% block a2lix_translationsForms_widget %}
