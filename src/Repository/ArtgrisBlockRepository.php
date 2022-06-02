@@ -25,6 +25,8 @@ class ArtgrisBlockRepository extends ServiceEntityRepository
     public function findByRegex(string $bloc = null): array
     {
         return $this->createQueryBuilder('b')
+            ->addSelect('translations')
+            ->leftJoin('b.translations', 'translations')
             ->where('REGEXP(b.slug, :regexp) = true')
             ->setParameter('regexp', $bloc)
             ->orderBy('b.position', 'ASC')
@@ -38,6 +40,8 @@ class ArtgrisBlockRepository extends ServiceEntityRepository
     public function findBlockDiff(array $blocks): array
     {
         return $this->createQueryBuilder('b')
+            ->addSelect('translations')
+            ->leftJoin('b.translations', 'translations')
             ->where('b.slug not in (:blocks)')
             ->setParameter('blocks', $blocks)
             ->getQuery()

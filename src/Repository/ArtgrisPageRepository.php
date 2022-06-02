@@ -25,6 +25,10 @@ class ArtgrisPageRepository extends ServiceEntityRepository
     public function findByRoute(string $route = null): array
     {
         return $this->createQueryBuilder('p')
+            ->addSelect('blocks')
+            ->addSelect('translations')
+            ->leftJoin('p.blocks', 'blocks')
+            ->leftJoin('blocks.translations', 'translations')
             ->where('p.route = :route')
             ->orWhere('p.route IS NULL')
             ->setParameter('route', $route)
