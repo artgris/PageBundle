@@ -118,6 +118,7 @@ class ArtgrisPageCrudController extends AbstractCrudController
         $fieldBlocks = CollectionField::new('blocks')
             ->setRequired(false)
             ->setEntryType(BlockType::class)
+            ->setSortable(false)
             ->setFormTypeOptions(
                 [
                     'by_reference' => false,
