@@ -41,7 +41,6 @@ class BlockType extends AbstractType
             ->add('type', ChoiceType::class, [
                 'label' => false,
                 'required' => true,
-                'placeholder' => 'form.type.placeholder',
                 'choices' => $this->typeService->getTypes(),
             ])
             ->add('translatable', null, [
