@@ -33,7 +33,7 @@ class ArtgrisPageCrudController extends AbstractCrudController
     /**
      * ArtgrisPageCrudController constructor.
      */
-    public function __construct(private RouterInterface $router, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(protected RouterInterface $router, protected AdminUrlGenerator $adminUrlGenerator)
     {
     }
 
