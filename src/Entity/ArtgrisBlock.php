@@ -41,14 +41,14 @@ class ArtgrisBlock implements TranslatableInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?ArtgrisPage $page = null;
 
-    #[ORM\Column(type: 'string', length: 128, unique:true)]
+    #[ORM\Column(type: 'string', length: 128, unique: true)]
     #[Gedmo\Slug(fields: ['name'], updatable: false)]
     #[Gedmo\SlugHandler(class: RelativeSlugHandler::class, options: [
         'relationField' => 'page',
         'relationSlugField' => 'slug',
         'separator' => '-',
     ])]
-    private string $slug;
+    private ?string $slug;
 
     #[ORM\Column(type: 'boolean')]
     private ?bool $translatable = false;
@@ -135,6 +135,26 @@ class ArtgrisBlock implements TranslatableInterface
 
     public function __toString(): string
     {
+        return $this->slug;
+    }
+
+    public function preSlug()
+    {
+        if ($this->slug && $this->page && $this->page->getSlug()) {
+            $parentSlug = $this->page->getSlug();
+            return preg_replace("/^{$parentSlug}-/", '', $this->slug);
+        }
+
+        return $this->slug;
+    }
+
+    public function postSlug()
+    {
+        if ($this->slug && $this->page && $this->page->getSlug()) {
+            $parentSlug = $this->page->getSlug();
+            return "{$parentSlug}-$this->slug";
+        }
+
         return $this->slug;
     }
 }

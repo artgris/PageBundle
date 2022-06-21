@@ -98,7 +98,12 @@ class ImportModelCommand extends Command
                 $blockEntity = $blockRepository->findOneBy(['slug' => $blockSlug]);
                 if ($blockEntity === null) {
                     $blockEntity = new ArtgrisBlock();
+
+                    if (str_starts_with($blockSlug,$pageSlug)) {
+                        $blockSlug = preg_replace("/^{$pageSlug}-/", '', $blockSlug);
+                    }
                     $blockEntity->setSlug($blockSlug);
+
                     $operations[] = "<fg=default;bg=green>Create block '{$blockSlug}'</>";
                 } else {
                     $originalBlockEntity = clone $blockEntity;

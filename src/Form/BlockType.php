@@ -8,6 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BlockType extends AbstractType
@@ -24,6 +26,7 @@ class BlockType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
             ->add('name', null, [
                 'label' => false,
@@ -51,6 +54,14 @@ class BlockType extends AbstractType
                     'class' => 'position',
                 ],
             ]);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $entry = $event->getData();
+            if ($entry) {
+                $entry->setSlug($entry->preSlug());
+            }
+        });
+
     }
 
     /**

@@ -26,7 +26,9 @@ class BlockConfigType extends AbstractType
                 $child = $event->getData();
 
                 if ($child instanceof ArtgrisBlock) {
-                    $helpTag = '<i class="fa fa-tag"></i> '.$child->getSlug();
+
+
+                    $helpTag = '<i class="fa fa-tag"></i> '.$child->postSlug();
 
                     $typeExists = class_exists($child->getType());
                     $content = [
