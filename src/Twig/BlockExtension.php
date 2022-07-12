@@ -67,7 +67,7 @@ class BlockExtension extends AbstractExtension
         $block = $this->getBlocks();
 
         // get from cache
-        if (array_key_exists($bloc, $block)) {
+        if ($block && array_key_exists($bloc, $block)) {
             return $block[$bloc];
         }
 
