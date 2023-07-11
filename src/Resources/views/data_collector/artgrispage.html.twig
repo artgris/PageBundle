@@ -67,31 +67,33 @@
 
     {% set text %}
         <div class="sf-toolbar-info-piece">
-            <b><u>Blok</u></b> <b style="text-align: center;"><u>Page</u></b> <b style="text-align: center;"><u>Route</u></b>
-        </div>
-        {% for routes in collector.blocks %}
-            {% for pages in routes %}
-                {% for block in pages %}
-                    <div class="sf-toolbar-info-piece ">
-                       <span class="sf-toolbar-status ">
-                           <a onclick="return copyToClipboard('\{\{ blok(\'{{ block.slug }}\') \}\}');" href="#" title="Copy {{ block.slug }} to clipboard.">{{ block.slug }}</a>
-                       </span> <b style="text-align: center;">{{ loop.first ? block.page.name : '|' }}</b> <b style="text-align: center;">
+            {% for routes in collector.blocks %}
+                {% for pages in routes %}
+                    {% for block in pages %}
+                        {% if loop.first %}
+                            <div style="margin-top: 4px"><b>{{ block.page.name }}</b></div>
+                        {% endif %}
+                        <div>
+                            <a onclick="return copyToClipboard('\{\{ blok(\'{{ block.slug }}\') \}\}');"
+                               href="#"
+                               title="Copy {{ block.slug }} to clipboard.">{{ block.slug }}</a>
+
                             {% if loop.first %}
+                                <span class="sf-toolbar-status">
                                 {% if block.page.route is empty %}
-                                    <span class="sf-toolbar-status">no route</span>
+                                    no route
                                 {% else %}
-                                    {{ block.page.route | split('::', 2)[1] }}
+                                    {{ block.page.route|split('::', 2)[1] }}
                                 {% endif %}
-                            {% else %}
-                                |
+                                      </span>
                             {% endif %}
-                        </b>
-                    </div>
+                        </div>
+
+                    {% endfor %}
                 {% endfor %}
             {% endfor %}
-        {% endfor %}
+        </div>
     {% endset %}
-
     {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': true }) }}
 
 {% endblock %}
