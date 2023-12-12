@@ -35,7 +35,13 @@ class RouteExtension extends AbstractExtension
             $defaults = $params->getDefaults();
             $controller = $defaults['_controller'];
             if ($routeName === $controller) {
-                return $params->getPath();
+                if ($locale) {
+                    if ($locale == $params->getDefault('_locale')) {
+                        return $params->getPath();
+                    }
+                } else {
+                    return $params->getPath();
+                }
             }
         }
 
