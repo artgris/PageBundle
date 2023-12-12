@@ -25,7 +25,7 @@ class RouteExtension extends AbstractExtension
         ];
     }
 
-    public function transformeToRoute(?string $routeName): string
+    public function transformeToRoute(?string $routeName, ?string $locale = null): string
     {
         if (null === $routeName) {
             return '';
